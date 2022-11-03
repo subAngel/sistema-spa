@@ -12,6 +12,9 @@ class User():
         self.especialidad = especialidad
         self.cedula = cedula
 
+    @classmethod
+    def check_password(self, self_password, password):
+        return self_password == password
     # @classmethod
     # def check_password(self, hashed_password, password):
     #     return check_password_hash(hashed_password, password)

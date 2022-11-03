@@ -30,13 +30,12 @@ def login():
         print(logged_user)
         if logged_user != None:
             if logged_user.password:
-                print('Usuario logeado')
                 return redirect(url_for('home'))
             else:
-                print("Invalid password...")
+                flash("Contraseña invalida.")
                 return render_template('auth/login.html')
         else:
-            print("User not found...")
+            flash("Usuario no encontrado")
             return render_template('auth/login.html')
     else:
         return render_template('auth/login.html')
