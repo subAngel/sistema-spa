@@ -40,6 +40,7 @@ Login
             <input type="text" name="username" id="userName"
                 placeholder="Nombre de usuario">
         </div>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <div class="form-field d-flex align-items-center mt-4">
             <span class="fas fa-key"></span>
             <input type="password" name="password" id="pwd"
