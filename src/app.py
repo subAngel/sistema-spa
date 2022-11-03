@@ -26,14 +26,14 @@ def login():
         # print(request.form['password'])
         user = User(0, "", "", request.form['username'], request.form['password'], "",0,"", "")
         logged_user = ModelUser.login(db, user)
-        if logged_user != None:
+        if logged_user != None: # ? Si el usuario existe
             if logged_user.password:
                 return redirect(url_for('home'))
             else:
                 flash("invalid password")
                 return render_template('auth/login.html')
 
-        else:
+        else: # ? si no hay un usuario encontrado
             flash("user not found..")
             return render_template('auth/login.html')
         return render_template('auth/login.html')

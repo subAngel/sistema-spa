@@ -1,5 +1,5 @@
 class Config:
-    SECRETE_KEY= 'B!1w8NAt1T^%kvhafafUI*S^'
+    SECRET_KEY = 'B!1w8NAt1T^%kvhUI*S^'
 class DevelopmentConfig(Config):
     DEBUG = True
     MYSQL_HOST = 'localhost'
@@ -7,4 +7,6 @@ class DevelopmentConfig(Config):
     MYSQL_PASSWORD = 'admin'
     MYSQL_DB = 'namastebd'
 
-config={'development': DevelopmentConfig}
+config = {
+    'development': DevelopmentConfig
+}
