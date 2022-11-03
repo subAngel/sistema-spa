@@ -1,6 +1,6 @@
 from werkzeug.security import check_password_hash
 
-class user():
+class User():
     def __init__(self, id, nombre, apellidos, username, password, turno, sueldo, especialidad, cedula) -> None:
         self.id = id
         self.nombre = nombre
@@ -17,4 +17,4 @@ class user():
         return check_password_hash(hashed_password, password)
 
 
-# print(generate_password_hash("holamundo"))
+# print(generate_password_hash("santiagomor"))
