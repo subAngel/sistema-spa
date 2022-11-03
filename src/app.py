@@ -21,22 +21,23 @@ def index():
 
 @app.route('/login', methods=['GET',"POST"])
 def login():
-    if request.method=='POST':
+    if request.method == 'POST':
         # print(request.form['username'])
         # print(request.form['password'])
         user = User(0, "", "", request.form['username'], request.form['password'], "",0,"", "")
         logged_user = ModelUser.login(db, user)
-        if logged_user != None: # ? Si el usuario existe
+        print(user)
+        print(logged_user)
+        if logged_user != None:
             if logged_user.password:
+                print('Usuario logeado')
                 return redirect(url_for('home'))
             else:
-                flash("invalid password")
+                print("Invalid password...")
                 return render_template('auth/login.html')
-
-        else: # ? si no hay un usuario encontrado
-            flash("user not found..")
+        else:
+            print("User not found...")
             return render_template('auth/login.html')
-        return render_template('auth/login.html')
     else:
         return render_template('auth/login.html')
 

@@ -14,9 +14,11 @@ class ModelUser():
             row=cursor.fetchone()
             if row != None:
                 # * si hay un usuario
-                user = User(row[0], row[1], row[2], row[3], User.check_password(row[4], user.password), row[5],row[6],row[7],row[8])
+                print("usuario encontrado")
+                user = User(row[0], row[1], row[2], row[3], row[4], row[5],row[6],row[7],row[8])
                 return user
             else:
+                print("Usuario none")
                 return None
         except Exception as ex:
             raise Exception(ex)

@@ -5,7 +5,7 @@ class DevelopmentConfig(Config):
     MYSQL_HOST = 'localhost'
     MYSQL_USER = 'root'
     MYSQL_PASSWORD = 'admin'
-    MYSQL_DB = 'namastebd'
+    MYSQL_DB = 'spa_db'
 
 config = {
     'development': DevelopmentConfig
