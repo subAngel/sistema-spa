@@ -1,6 +1,6 @@
 # Sistema de un SPA
 
-{agregar una descripcion descripcion}\*
+{agregar una descripcion }\*
 
 ## Inicio
 
@@ -14,4 +14,10 @@ Instalar los paquetes necesarios
 
 ```
 pip install -r requirements.txt
+```
+
+Instalar los paquetes npm
+
+```
+npm i
 ```
