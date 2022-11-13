@@ -27,11 +27,12 @@ class Home:
         self.frame = Tk()
         self.frame.title("Home")
         self.frame.config(background=color1)
-        # self.frame.attributes('-fullscreen', True)
         ancho = self.frame.winfo_screenwidth()
         alto = self.frame.winfo_screenheight()
         self.frame.geometry("{}x{}".format(ancho, alto))
+        self.frame.state('zoomed')
 
+        # self.frame.attributes('-zoomed', True)
         self.DrawButtons()
         self.DrawLabel()
         self.DrawImage()
@@ -92,30 +93,35 @@ class Home:
         self.popT= Toplevel(self.frame)
         self.popT.title("Terapeuta")
         #popT.attributes('-topmost',True)
+        self.popT.state('zoomed')
+        ancho = self.frame.winfo_screenwidth()
+        alto = self.frame.winfo_screenheight()
+        self.frame.geometry("{}x{}".format(ancho, alto))
+
         self.DrawLabelT(self.popT)
         self.DrawEntryT(self.popT)
         self.DrawButtonsT(self.popT)
         self.DrawListT(self.popT)
-        self.popT.config(background="#06010C")
-        self.popT.geometry("3000x800")
+        self.popT.config(background=background)
+        # self.popT.geometry("3000x800")
 
     def DrawLabelT(self,popT):
-        self.lbl_registrarP = Label(popT, foreground="white", font=(
-            font_family, 30), background="#000000", text="Terapeuta").place(x=650, y=10)
-        self.lbl_idt = Label(popT, foreground="white", font=(
-            8), background="#314252", text="Id Terapeuta").place(x=25, y=70)
-        self.lbl_name = Label(popT, foreground="white", font=(
-            8), background="#314252", text="Nombre").place(x=320, y=70)
-        self.lbl_ape = Label(popT, foreground="white", font=(
-            8), background="#314252", text="Apellidos").place(x=600, y=70)
-        self.lbl_turno = Label(popT, foreground="white", font=(
-            8), background="#314252", text="Turno").place(x=25, y=150)
-        self.lbl_sueldo = Label(popT, foreground="white", font=(
-            8), background="#314252", text="Sueldo").place(x=320, y=150)
-        self.lbl_especialidad = Label(popT, foreground="white", font=(
-            8), background="#314252", text="Especialidad").place(x=600, y=150)
-        self.lbl_cedula = Label(popT, foreground="white", font=(
-            8), background="#314252", text="Cedula").place(x=25, y=240)
+        self.lbl_registrarP = Label(popT, foreground=foreground, font=(
+            font_family, 30), background=background, text="Terapeuta").place(x=650, y=10)
+        self.lbl_idt = Label(popT, foreground=foreground, font=(font_family,
+            12), background=background, text="Id Terapeuta").place(x=25, y=70)
+        self.lbl_name = Label(popT, foreground=foreground, font=(font_family,
+            12), background=background, text="Nombre").place(x=320, y=70)
+        self.lbl_ape = Label(popT, foreground=foreground, font=(font_family,
+            12), background=background, text="Apellidos").place(x=600, y=70)
+        self.lbl_turno = Label(popT, foreground=foreground, font=(font_family,
+            12), background=background, text="Turno").place(x=25, y=150)
+        self.lbl_sueldo = Label(popT, foreground=foreground, font=(font_family,
+            12), background=background, text="Sueldo").place(x=320, y=150)
+        self.lbl_especialidad = Label(popT, foreground=foreground, font=(font_family,
+            12), background=background, text="Especialidad").place(x=600, y=150)
+        self.lbl_cedula = Label(popT, foreground=foreground, font=(font_family,
+            12), background=background, text="Cedula").place(x=25, y=240)
 
     def DrawEntryT(self,popT):
 
