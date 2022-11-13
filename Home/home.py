@@ -132,13 +132,19 @@ class Home:
                 self.btn_modificar_tera.config(state=NORMAL)
                 self.btn_eliminar_tera.config(state=NORMAL)
 
+        def limpiar_campos():
+            self.ClearEntryT()
+            self.btn_nuevo_tera.config(state=NORMAL)
+            self.btn_modificar_tera.config(state=DISABLED)
+            self.btn_eliminar_tera.config(state=DISABLED)
+
         # * ____________________________________TITULO__________________________________
         self.lbl_registrarP = Label(popT, foreground=foreground, font=(
             font_family, 30), background=background, text="Terapeuta").grid(column=0, row=0)
 
         self.limpiar = Button(popT, font=(font_family, 11), foreground="#222",
                               text="LIMPIAR FORMULARIO", borderwidth=2, relief="flat", cursor="hand1", overrelief="raise",
-                              background=background, command=lambda: self.ClearEntryT())
+                              background=background, command=lambda: limpiar_campos())
         self.limpiar.grid(column=3, row=0)
 
         # * -----------------------------------FILA 1------------------------------------
