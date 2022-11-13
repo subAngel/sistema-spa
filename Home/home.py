@@ -8,12 +8,15 @@ import ctypes
 
 
 # * COLORES
-color1 = "#FBFACD"
-color2 = "#DEBACE"
-color3 = "#BA94D1"
-color4 = "#7F669D"
+color1 = "#FAF7F0"
+background = "#FAF7F0"
+foreground = "#333"
+color2 = "#CDFCF6"
+color3 = "#BCCEF8"
+color4 = "#98A8F8"
 
-# * obtener el tamaño de la pantalla
+# * variables globales
+font_family = 'Segoe UI'
 
 
 class Home:
@@ -23,8 +26,11 @@ class Home:
         # instanciar la clase
         self.frame = Tk()
         self.frame.title("Home")
-        self.frame.config(background=color4)
-        self.frame.geometry("3000x800")
+        self.frame.config(background=color1)
+        # self.frame.attributes('-fullscreen', True)
+        ancho = self.frame.winfo_screenwidth()
+        alto = self.frame.winfo_screenheight()
+        self.frame.geometry("{}x{}".format(ancho, alto))
 
         self.DrawButtons()
         self.DrawLabel()
@@ -33,41 +39,41 @@ class Home:
         # self.loadImage()
 
     def DrawLabel(self):
-        self.lbl_titulo = Label(self.frame, foreground="white", font=(
-            'Times', 40), background="#06010C", text="Bienvenido al sistema").place(x=450, y=20)
-        self.lbl_opcion = Label(self.frame, foreground="white", font=(
-            'Times', 30), background="#06010C", text="Seleccione una opción").place(x=500, y=100)
-        self.lbl_terapeuta = Label(self.frame, foreground="white", font=(
-            'Times', 30), background="#06010C", text="Modulo Terapeuta").place(x=150, y=350)
-        self.lbl_opcion = Label(self.frame, foreground="white", font=(
-            'Times', 30), background="#06010C", text="Modulo Paciente").place(x=560, y=350)
-        self.lbl_opcion = Label(self.frame, foreground="white", font=(
-            'Times', 30), background="#06010C", text="Registrar Cita").place(x=980, y=350)
-        self.lbl_opcion = Label(self.frame, foreground="white", font=(
-            'Times', 100), background="#06010C", text=". . .").place(x=600, y=150)
+        self.lbl_titulo = Label(self.frame, foreground=foreground, font=(
+            font_family, 40), background=background, text="Bienvenido al sistema").place(x=450, y=20)
+        self.lbl_opcion = Label(self.frame, foreground=foreground, font=(
+            font_family, 30), background=background, text="Seleccione una opción").place(x=500, y=100)
+        self.lbl_terapeuta = Label(self.frame, foreground=foreground, font=(
+            font_family, 30), background=background, text="Agregar terapeuta").place(x=150, y=350)
+        self.lbl_opcion = Label(self.frame, foreground=foreground, font=(
+            font_family, 30), background=background, text="Agregar paciente").place(x=560, y=350)
+        self.lbl_opcion = Label(self.frame, foreground=foreground, font=(
+            font_family, 30), background=background, text="Generar consulta").place(x=980, y=350)
+        self.lbl_opcion = Label(self.frame, foreground=foreground, font=(
+            font_family, 100), background=background, text=". . .").place(x=600, y=150)
         # self.lbl_usuario = Label(self.frame, foreground="white", font=(
         #     8), background="#000000", text="Usuario").place(x=230, y=260)
         # self.lbl_usuario = Label(self.frame, foreground="white", font=(
         #     8), background="#000000", text="Contraseña").place(x=220, y=340)
 
     def DrawImage(self):
-        self.img = ImageTk.PhotoImage(Image.open('sp.png').resize((100,100),Image.ANTIALIAS))
-        lblImagen = Label(self.frame, image=self.img).place(
+        self.img = ImageTk.PhotoImage(Image.open('relax1.png').resize((150,150),Image.ANTIALIAS))
+        lblImagen = Label(self.frame, background=background ,image=self.img).place(
             x=100, y=30, width=300, height=150)
-        lblImagen = Label(self.frame, image=self.img).place(
+        lblImagen = Label(self.frame, background=background ,image=self.img).place(
             x=1000, y=30, width=300, height=150)
 
     def DrawButtons(self):
         self.imgT = ImageTk.PhotoImage(Image.open('terapeuta.png').resize((100,100),Image.ANTIALIAS))
         self.imgP = ImageTk.PhotoImage(Image.open('paciente.png').resize((100,100),Image.ANTIALIAS))
         self.imgC = ImageTk.PhotoImage(Image.open('cita.png').resize((100,100),Image.ANTIALIAS))
-        self.btn_terapeuta = Button(self.frame, font=('Times', 15), foreground="white", text="Ingresar", borderwidth=2, relief="flat", cursor="hand1",
+        self.btn_terapeuta = Button(self.frame, font=(font_family, 15), foreground=foreground, background=color3,  text="Ingresar", borderwidth=2, relief="flat", cursor="hand1",
         overrelief="raise", image=self.imgT, command=lambda: self.moduloTerapeuta()).place(x=200, y=420, width=200, height=250)
 
-        self.btn_paciente = Button(self.frame, font=('Times', 15), foreground="white", text="Ingresar", borderwidth=2, relief="flat", cursor="hand1",
+        self.btn_paciente = Button(self.frame, font=('Segoe UI', 15), foreground=foreground, background=color3, text="Ingresar", borderwidth=2, relief="flat", cursor="hand1",
         overrelief="raise", image=self.imgP, command=lambda: self.Option(2)).place(x=600, y=420, width=200, height=250)
 
-        self.btn_cita = Button(self.frame, font=('Times', 15), foreground="white", text="Ingresar", borderwidth=2, relief="flat", cursor="hand1",
+        self.btn_cita = Button(self.frame, font=(font_family, 15), foreground=foreground, background=color3, text="Ingresar", borderwidth=2, relief="flat", cursor="hand1",
         overrelief="raise", image=self.imgC, command=lambda: self.Option(3)).place(x=1000, y=420, width=200, height=250)
 
     def Option(self,op):
@@ -95,7 +101,7 @@ class Home:
 
     def DrawLabelT(self,popT):
         self.lbl_registrarP = Label(popT, foreground="white", font=(
-            'Times', 30), background="#000000", text="Terapeuta").place(x=650, y=10)
+            font_family, 30), background="#000000", text="Terapeuta").place(x=650, y=10)
         self.lbl_idt = Label(popT, foreground="white", font=(
             8), background="#314252", text="Id Terapeuta").place(x=25, y=70)
         self.lbl_name = Label(popT, foreground="white", font=(
@@ -140,7 +146,7 @@ class Home:
                                   overrelief="raise", background="#0051C8", command=lambda: self.confirmProcessT(popT)).place(x=750, y=640, width=90)
         self.btn_cancel = Button(popT, text="Cancelar", foreground="white", borderwidth=2, relief="flat", cursor="hand1",
                                  overrelief="raise", background="#E81123", command=lambda: self.canceProcessT()).place(x=850, y=640, width=90)
-        self.btn_home = Button(popT, font=('Times', 15), foreground="white", text="Regresar", borderwidth=2, relief="flat", cursor="hand1",
+        self.btn_home = Button(popT, font=(font_family, 15), foreground="white", text="Regresar", borderwidth=2, relief="flat", cursor="hand1",
                                overrelief="raise", background="#0051C8", command=lambda: self.homT(popT)).place(x=950, y=640, width=90)
     def DrawListT(self,popT):
         self.list_elemtsT = ttk.Treeview(popT, columns=(
