@@ -19,8 +19,8 @@ class Data:
     def InsertItems(self, element):
         # our element contend the name, age and the carreer of the student
         # in position 0, 1, 2
-        sql = "insert into tterapeuta(idtterapeuta,nombre,apellidos,turno,sueldo,especialidad,cedula) values('{}', '{}', '{}','{}', '{}', '{}','{}')".format(
-            element[0], element[1], element[2], element[3], element[4], element[5], element[6])
+        sql = "insert into tterapeuta(nombre,apellidos,turno,sueldo,especialidad,cedula) values('{}', '{}','{}', '{}', '{}','{}')".format(
+            element[0], element[1], element[2], element[3], element[4], element[5])
         # execute the query
         self.cursor.execute(sql)
         self.conn.commit()  # guardamos cambios
@@ -45,8 +45,8 @@ class Data:
     def UpdateItem(self, element, ref):
         # element contains the values and ref is the name of the item that we want change
 
-        sql = "update tterapeuta set idtterapeuta = '{}', nombre = '{}',apellidos = '{}', turno='{}', sueldo ='{}', especialidad='{}', cedula='{}'  where idtterapeuta = '{}'".format(
-            element[0], element[1], element[2], element[3], element[4], element[5], element[6], ref)
+        sql = "update tterapeuta set nombre = '{}',apellidos = '{}', turno='{}', sueldo ='{}', especialidad='{}', cedula='{}'  where idtterapeuta = '{}'".format(
+            element[0], element[1], element[2], element[3], element[4], element[5], ref)
         # execute the query
         self.cursor.execute(sql)
         self.conn.commit()  # guardamos cambios

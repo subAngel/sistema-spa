@@ -9,6 +9,7 @@ import ctypes
 
 # * COLORES
 color1 = "#FAF7F0"
+input_color = "#fff"
 background = "#FAF7F0"
 foreground = "#333"
 color2 = "#CDFCF6"
@@ -58,74 +59,59 @@ class Home:
         #     8), background="#000000", text="Contraseña").place(x=220, y=340)
 
     def DrawImage(self):
-        self.img = ImageTk.PhotoImage(Image.open('relax1.png').resize((150,150),Image.ANTIALIAS))
-        lblImagen = Label(self.frame, background=background ,image=self.img).place(
+        self.img = ImageTk.PhotoImage(Image.open(
+            'relax1.png').resize((150, 150), Image.ANTIALIAS))
+        lblImagen = Label(self.frame, background=background, image=self.img).place(
             x=100, y=30, width=300, height=150)
-        lblImagen = Label(self.frame, background=background ,image=self.img).place(
+        lblImagen = Label(self.frame, background=background, image=self.img).place(
             x=1000, y=30, width=300, height=150)
 
     def DrawButtons(self):
-        self.imgT = ImageTk.PhotoImage(Image.open('terapeuta.png').resize((100,100),Image.ANTIALIAS))
-        self.imgP = ImageTk.PhotoImage(Image.open('paciente.png').resize((100,100),Image.ANTIALIAS))
-        self.imgC = ImageTk.PhotoImage(Image.open('cita.png').resize((100,100),Image.ANTIALIAS))
+        self.imgT = ImageTk.PhotoImage(Image.open(
+            'terapeuta.png').resize((100, 100), Image.ANTIALIAS))
+        self.imgP = ImageTk.PhotoImage(Image.open(
+            'paciente.png').resize((100, 100), Image.ANTIALIAS))
+        self.imgC = ImageTk.PhotoImage(Image.open(
+            'cita.png').resize((100, 100), Image.ANTIALIAS))
         self.btn_terapeuta = Button(self.frame, font=(font_family, 15), foreground=foreground, background=color3,  text="Ingresar", borderwidth=2, relief="flat", cursor="hand1",
-        overrelief="raise", image=self.imgT, command=lambda: self.moduloTerapeuta()).place(x=200, y=420, width=200, height=250)
+                                    overrelief="raise", image=self.imgT, command=lambda: self.moduloTerapeuta()).place(x=200, y=420, width=200, height=250)
 
         self.btn_paciente = Button(self.frame, font=('Segoe UI', 15), foreground=foreground, background=color3, text="Ingresar", borderwidth=2, relief="flat", cursor="hand1",
-        overrelief="raise", image=self.imgP, command=lambda: self.Option(2)).place(x=600, y=420, width=200, height=250)
+                                   overrelief="raise", image=self.imgP, command=lambda: self.Option(2)).place(x=600, y=420, width=200, height=250)
 
         self.btn_cita = Button(self.frame, font=(font_family, 15), foreground=foreground, background=color3, text="Ingresar", borderwidth=2, relief="flat", cursor="hand1",
-        overrelief="raise", image=self.imgC, command=lambda: self.Option(3)).place(x=1000, y=420, width=200, height=250)
+                               overrelief="raise", image=self.imgC, command=lambda: self.Option(3)).place(x=1000, y=420, width=200, height=250)
 
-    def Option(self,op):
-        if op==1:
+    def Option(self, op):
+        if op == 1:
             self.frame.destroy()
 
-
-        elif op==2:
+        elif op == 2:
             messagebox.showerror(
                 message="Falta por ponerla", title="Error")
-        elif op==3:
+        elif op == 3:
             messagebox.showerror(
                 message="Falta por hacerla xd", title="Error")
 
     def moduloTerapeuta(self):
-        self.popT= Toplevel(self.frame)
+        self.popT = Toplevel(self.frame)
         self.popT.title("Terapeuta")
-        #popT.attributes('-topmost',True)
+        # popT.attributes('-topmost',True)
         self.popT.state('zoomed')
         ancho = self.frame.winfo_screenwidth()
         alto = self.frame.winfo_screenheight()
         self.frame.geometry("{}x{}".format(ancho, alto))
+        self.marco = LabelFrame(self.popT, text="Formulario de terapeuta")
 
-        self.DrawLabelT(self.popT)
-        self.DrawEntryT(self.popT)
-        self.DrawButtonsT(self.popT)
-        self.DrawListT(self.popT)
-        self.popT.config(background=background)
+        self.marco.place(x=300, y=80, width=1000, height=alto-150)
+        self.DrawComponents(self.marco)
+        # self.DrawButtonsT(self.marco)
+        # self.DrawEntryT(self.marco)
+        # self.DrawListT(self.marco)
+        self.marco.config(background=background)
         # self.popT.geometry("3000x800")
 
-    def DrawLabelT(self,popT):
-        self.lbl_registrarP = Label(popT, foreground=foreground, font=(
-            font_family, 30), background=background, text="Terapeuta").place(x=650, y=10)
-        self.lbl_idt = Label(popT, foreground=foreground, font=(font_family,
-            12), background=background, text="Id Terapeuta").place(x=25, y=70)
-        self.lbl_name = Label(popT, foreground=foreground, font=(font_family,
-            12), background=background, text="Nombre").place(x=320, y=70)
-        self.lbl_ape = Label(popT, foreground=foreground, font=(font_family,
-            12), background=background, text="Apellidos").place(x=600, y=70)
-        self.lbl_turno = Label(popT, foreground=foreground, font=(font_family,
-            12), background=background, text="Turno").place(x=25, y=150)
-        self.lbl_sueldo = Label(popT, foreground=foreground, font=(font_family,
-            12), background=background, text="Sueldo").place(x=320, y=150)
-        self.lbl_especialidad = Label(popT, foreground=foreground, font=(font_family,
-            12), background=background, text="Especialidad").place(x=600, y=150)
-        self.lbl_cedula = Label(popT, foreground=foreground, font=(font_family,
-            12), background=background, text="Cedula").place(x=25, y=240)
-
-    def DrawEntryT(self,popT):
-
-        self.idter = StringVar()
+    def DrawComponents(self, popT):
         self.nombreT = StringVar()
         self.apellidosT = StringVar()
         self.turnoT = StringVar()
@@ -133,68 +119,185 @@ class Home:
         self.especialidadT = StringVar()
         self.cedulaT = StringVar()
 
-        self.b_idter = Entry(popT, font=('Arial', 12), relief="flat", background="#E7E7E7",
-                             textvariable=self.idter).place(x=140, y=70, height=25, width=150)
-        self.b_nombre = Entry(popT, font=('Arial', 12), relief="flat", background="#E7E7E7",
-                              textvariable=self.nombreT).place(x=400, y=70, height=25, width=150)
-        self.b_apellidos = Entry(popT, font=('Arial', 12), relief="flat", background="#E7E7E7",
-                                 textvariable=self.apellidosT).place(x=720, y=70, height=25, width=150)
-        self.b_turno = Entry(popT, font=('Arial', 12), relief="flat", background="#E7E7E7",
-                             textvariable=self.turnoT).place(x=140, y=150, height=25, width=150)
-        self.b_sueldo = Entry(popT, font=('Arial', 12), relief="flat", background="#E7E7E7",
-                              textvariable=self.sueldoT).place(x=400, y=150, height=25, width=150)
-        self.b_especialidad = Entry(popT, font=('Arial', 12), relief="flat", background="#E7E7E7",
-                                    textvariable=self.especialidadT).place(x=720, y=150, height=25, width=150)
-        self.b_cedula = Entry(popT, font=('Arial', 12), relief="flat", background="#E7E7E7",
-                              textvariable=self.cedulaT).place(x=140, y=240, height=25, width=150)
-    def DrawButtonsT(self,popT):
-        self.btn_confirm = Button(popT, foreground="white", text="Guardar", borderwidth=2, relief="flat", cursor="hand1",
-                                  overrelief="raise", background="#0051C8", command=lambda: self.confirmProcessT(popT)).place(x=750, y=640, width=90)
-        self.btn_cancel = Button(popT, text="Cancelar", foreground="white", borderwidth=2, relief="flat", cursor="hand1",
-                                 overrelief="raise", background="#E81123", command=lambda: self.canceProcessT()).place(x=850, y=640, width=90)
-        self.btn_home = Button(popT, font=(font_family, 15), foreground="white", text="Regresar", borderwidth=2, relief="flat", cursor="hand1",
-                               overrelief="raise", background="#0051C8", command=lambda: self.homT(popT)).place(x=950, y=640, width=90)
-    def DrawListT(self,popT):
+        def seleccionar(event):
+            id = self.list_elemtsT.selection()[0]
+            if id:
+                self.nombreT.set(self.list_elemtsT.item(id, "values")[1])
+                self.apellidosT.set(self.list_elemtsT.item(id, "values")[2])
+                self.turnoT.set(self.list_elemtsT.item(id, "values")[3])
+                self.sueldoT.set(self.list_elemtsT.item(id, "values")[4])
+                self.especialidadT.set(self.list_elemtsT.item(id, "values")[5])
+                self.cedulaT.set(self.list_elemtsT.item(id, "values")[6])
+                self.btn_nuevo_tera.config(state=DISABLED)
+                self.btn_modificar_tera.config(state=NORMAL)
+                self.btn_eliminar_tera.config(state=NORMAL)
+
+        # * ____________________________________TITULO__________________________________
+        self.lbl_registrarP = Label(popT, foreground=foreground, font=(
+            font_family, 30), background=background, text="Terapeuta").grid(column=0, row=0)
+
+        self.limpiar = Button(popT, font=(font_family, 11), foreground="#222",
+                              text="LIMPIAR FORMULARIO", borderwidth=2, relief="flat", cursor="hand1", overrelief="raise",
+                              background=background, command=lambda: self.ClearEntryT())
+        self.limpiar.grid(column=3, row=0)
+
+        # * -----------------------------------FILA 1------------------------------------
+        self.lbl_name = Label(popT, foreground=foreground, font=(font_family,
+                                                                 12), background=background, text="Nombre").grid(column=0, row=1, pady=20, padx=100)
+        self.b_nombre = Entry(popT, font=(font_family, 12), relief="flat",
+                              background=input_color, foreground=foreground, textvariable=self.nombreT)
+        self.b_nombre.grid(column=1, row=1)
+
+        self.lbl_ape = Label(popT, foreground=foreground, font=(font_family,
+                                                                12), background=background, text="Apellidos").grid(column=2, row=1)
+        self.b_apellidos = Entry(popT, font=(font_family, 12), relief="flat", background=input_color, foreground=foreground,
+                                 textvariable=self.apellidosT)
+        self.b_apellidos.grid(column=3, row=1)
+
+        # * ----------------------FILA 2 turno , sueldo ---------------------------
+
+        self.lbl_turno = Label(popT, foreground=foreground, font=(font_family,
+                                                                  12), background=background, text="Turno").grid(column=0, row=2, pady=20, padx=100)
+        self.combo_turno = ttk.Combobox(
+            popT, values=["Vespertino", "Matutino"], textvariable=self.turnoT)
+        self.combo_turno.grid(column=1, row=2)
+
+        self.lbl_sueldo = Label(popT, foreground=foreground, font=(font_family,
+                                                                   12), background=background, text="Sueldo").grid(column=2, row=2)
+        self.b_sueldo = Entry(popT, font=(font_family, 12), relief="flat", background=input_color, foreground=foreground,
+                              textvariable=self.sueldoT)
+        self.b_sueldo.grid(column=3, row=2)
+
+        # * ----------------------FILA 3 especialidad, cedula ---------------------------
+
+        self.lbl_especialidad = Label(popT, foreground=foreground, font=(font_family,
+                                                                         12), background=background, text="Especialidad").grid(column=0, row=3, pady=20, padx=100)
+        self.b_especialidad = Entry(popT, font=(font_family, 12), relief="flat", background=input_color, foreground=foreground,
+                                    textvariable=self.especialidadT)
+        self.b_especialidad.grid(column=1, row=3)
+
+        self.lbl_cedula = Label(popT, foreground=foreground, font=(font_family,
+                                                                   12), background=background, text="Cedula").grid(column=2, row=3)
+        self.b_cedula = Entry(popT, font=(font_family, 12), relief="flat", background=input_color, foreground=foreground,
+                              textvariable=self.cedulaT)
+        self.b_cedula.grid(column=3, row=3)
+
+        # * -------------------------------FILA 3 tabla---------------------------------
+        # self.table_container
         self.list_elemtsT = ttk.Treeview(popT, columns=(
             1, 2, 3, 4, 5, 6, 7), show="headings", height="8")
 
         # --- STYLE ---
         style = ttk.Style()
         style.theme_use("clam")
-        style.configure("Treeview.Heading", background="#0051C8",
-                        relief="flat", foreground="white")
+        style.configure("Treeview.Heading", background=color4,
+                        relief="flat", foreground=foreground)
         style.map("Treeview", background=[
-                  ('selected', 'yellow')], foreground=[('selected', 'black')])
+                  ('selected', '#FBFACD')], foreground=[('selected', 'black')])
 
         # --- Event---
-        self.list_elemtsT.bind("<Double 1>", self.getRowT)
+        self.list_elemtsT.bind("<<TreeviewSelect>>", seleccionar)
         # ---- end ---
-
-        self.list_elemtsT.heading(1, text="IdTerapeuta")
-        self.list_elemtsT.heading(2, text="Nombre")
-        self.list_elemtsT.heading(3, text="Apellidos")
-        self.list_elemtsT.heading(4, text="Turno")
-        self.list_elemtsT.heading(5, text="Sueldo")
-        self.list_elemtsT.heading(6, text="Especialidad")
-        self.list_elemtsT.heading(7, text="Cedula")
-
-        self.list_elemtsT.column(1, anchor=CENTER)
-        self.list_elemtsT.column(2, anchor=CENTER)
-        self.list_elemtsT.column(3, anchor=CENTER)
-        self.list_elemtsT.column(4, anchor=CENTER)
-        self.list_elemtsT.column(5, anchor=CENTER)
-        self.list_elemtsT.column(6, anchor=CENTER)
-        self.list_elemtsT.column(7, anchor=CENTER)
-
+        self.list_elemtsT.grid(
+            column=0, row=4, columnspan=7, padx=100, pady=80)
+        self.list_elemtsT["columns"] = (
+            "ID", "NOMBRE", "APELLIDOS", "TURNO", "SUELDO", "ESPECIALIDAD", "CEDULA")
+        self.list_elemtsT.column("#0", anchor=CENTER, stretch=NO)
+        self.list_elemtsT.column("ID", anchor=CENTER, width=50)
+        self.list_elemtsT.column("NOMBRE", anchor=CENTER, width=130)
+        self.list_elemtsT.column("APELLIDOS", anchor=CENTER, width=150)
+        self.list_elemtsT.column("TURNO", anchor=CENTER, width=100)
+        self.list_elemtsT.column("SUELDO", anchor=CENTER, width=80)
+        self.list_elemtsT.column("ESPECIALIDAD", anchor=CENTER, width=100)
+        self.list_elemtsT.column("CEDULA", anchor=CENTER, width=100)
+        self.list_elemtsT.heading("#0", text="")
+        self.list_elemtsT.heading("ID", text="ID", anchor=CENTER)
+        self.list_elemtsT.heading("NOMBRE", text="NOMBRE", anchor=CENTER)
+        self.list_elemtsT.heading("APELLIDOS", text="APELLIDOS", anchor=CENTER)
+        self.list_elemtsT.heading("TURNO", text="TURNO", anchor=CENTER)
+        self.list_elemtsT.heading("SUELDO", text="SUELDO", anchor=CENTER)
+        self.list_elemtsT.heading(
+            "ESPECIALIDAD", text="ESPECIALIDAD", anchor=CENTER)
+        self.list_elemtsT.heading("CEDULA", text="CEDULA", anchor=CENTER)
         # -- FILL LIST--
-        d = Data()
-        self.rows = d.returnAllElements()
-        for i in self.rows:
-            print(i)
-            self.list_elemtsT.insert('', 'end', values=i)
-        # ----- end -----
 
-        self.list_elemtsT.place(x=10, y=400)
+        self.llenar_tabla_terapeuta()
+
+        # *---------------------------------- botones--------------------------------
+        self.lbl_messages = Label(popT, text=".", fg="green")
+        self.lbl_messages.grid(column=0, row=5)
+
+        self.btn_nuevo_tera = Button(popT, foreground="#222", text="AGREGAR", font=(font_family, 13),
+                                     borderwidth=2, relief="flat", cursor="hand1", overrelief="raise",
+                                     background="#B3FFAE", command=lambda: self.nuevo_terapeuta(popT))
+        self.btn_nuevo_tera.grid(column=1, row=5)
+
+        self.btn_eliminar_tera = Button(popT, text="ELIMINAR", foreground="white", font=(font_family, 13),
+                                        borderwidth=2, relief="flat", cursor="hand1", overrelief="raise",
+                                        background="#E97777", command=lambda: self.eliminar_terapeuta(popT))
+        self.btn_eliminar_tera.grid(column=2, row=5)
+
+        self.btn_modificar_tera = Button(popT, text="MODIFICAR", foreground="white", font=(font_family, 13),
+                                         borderwidth=2, relief="flat", cursor="hand1", overrelief="raise",
+                                         background="#B1AFFF", command=lambda: self.modificar_terapeuta(popT))
+        # self.btn_modificar_tera = Button(popT, font=(font_family, 13), foreground="#222",
+        #                                  text="EDITAR", borderwidth=2, relief="flat", cursor="hand1", overrelief="raise",
+        #                                  background="#B1AFFF", command=lambda: self.modificar_terapeuta(popT))
+        self.btn_modificar_tera.grid(column=3, row=5)
+
+    # * MODIFICACIONES ANGEL
+    def vaciar_tabla_terapeuta(self):
+        filas = self.list_elemtsT.get_children()
+        for fila in filas:
+            self.list_elemtsT.delete(fila)
+
+    def llenar_tabla_terapeuta(self):
+        self.vaciar_tabla_terapeuta()
+        d = Data()
+        self.filas = d.returnAllElements()
+        for fila in self.filas:
+            id = fila[0]
+            self.list_elemtsT.insert("", END, id, text=id, values=fila)
+
+    def nuevo_terapeuta(self, popT):
+        d = Data()
+        arr = [self.nombreT.get(), self.apellidosT.get(), self.combo_turno.get(
+        ), self.sueldoT.get(), self.especialidadT.get(), self.cedulaT.get()]
+        d.InsertItems(arr)
+        self.llenar_tabla_terapeuta()
+        self.lbl_messages.config(
+            text="Registro correcto", fg="green", bg=background)
+        self.ClearEntryT()
+
+    def eliminar_terapeuta(self, popT):
+        id = self.list_elemtsT.selection()[0]
+        db = Data()
+        if id:
+            db.Delete(int(id))
+            self.list_elemtsT.delete(id)
+            self.lbl_messages.config(
+                text="Terapeuta eliminado", fg="#d2b440", bg=background)
+            self.ClearEntryT()
+            self.btn_nuevo_tera.config(state=NORMAL)
+            self.btn_eliminar_tera.config(state=DISABLED)
+            self.btn_modificar_tera.config(state=DISABLED)
+        else:
+            self.lbl_messages.config(
+                text="Seleccione un registro", fg="#eb6736", bg=background)
+
+    def modificar_terapeuta(self):
+        arr = [self.nombreT.get(), self.apellidosT.get(), self.combo_turno.get(
+        ), self.sueldoT.get(), self.especialidadT.get(), self.cedulaT.get()]
+        id = self.list_elemtsT.selection()[0]
+        db = Data()
+        db.UpdateItem(arr, int(id))
+        self.lbl_messages.config(
+            text="Terapeuta modificado correctamente", fg="green")
+        self.llenar_tabla_terapeuta()
+        self.ClearEntryT()
+        self.btn_nuevo_tera.config(state=NORMAL)
+        self.btn_eliminar_tera.config(state=DISABLED)
+        self.btn_modificar_tera.config(state=DISABLED)
 
     def getRowT(self, event):
         idterap = StringVar()
@@ -266,25 +369,13 @@ class Home:
         self.ClearEntry()
 
     def ClearEntryT(self):
-        self.idter.set("")
+        # self.idter.set("")
         self.nombreT.set("")
         self.apellidosT.set("")
-        self.turnoT.set("")
+        self.combo_turno.set("")
         self.sueldoT.set("")
         self.especialidadT.set("")
         self.cedulaT.set("")
 
-    def confirmProcessT(self,popT):
-        # if self.nombre.get() != "":#self.idter.get() != None and self.nombre.get() != "" and self.apellidos.get() != "" and self.turno.get() != "" and self.sueldo.get() != None and self.especialidad.get() != "" and self.cedula.get() != "":
-        d = Data()
-        arr = [self.idter.get(), self.nombreT.get(), self.apellidosT.get(), self.turnoT.get(
-        ), self.sueldoT.get(), self.especialidadT.get(), self.cedulaT.get()]
-        d.InsertItems(arr)
-        # messagebox.showinfo(
-        #     title="Alerta", message="Se inserto correctamente!")
-        self.ClearListT()
-        self.DrawListT(popT)
-        self.ClearEntryT()
-
-    def homT(self,popT):
+    def homT(self, popT):
         popT.destroy()
