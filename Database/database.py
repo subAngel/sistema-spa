@@ -19,7 +19,7 @@ class Data:
     def InsertItems(self, element):
         # our element contend the name, age and the carreer of the student
         # in position 0, 1, 2
-        sql = "insert into tterapeuta(nombre,apellidos,turno,sueldo,especialidad,cedula) values('{}', '{}','{}', '{}', '{}','{}')".format(
+        sql = "insert into terapeuta(nombre,apellidos,turno,sueldo,especialidad,cedula) values('{}', '{}','{}', '{}', '{}','{}')".format(
             element[0], element[1], element[2], element[3], element[4], element[5])
         # execute the query
         self.cursor.execute(sql)
@@ -27,25 +27,25 @@ class Data:
 
     def ReturnOneItem(self, ref):
         # we have ref like name of the element
-        sql = "select * from tterapeuta where nombre = '{}'".format(ref)
+        sql = "select * from terapeuta where nombre = '{}'".format(ref)
         self.cursor.execute(sql)
         # return the element or nil
         return self.cursor.fetchone()
 
     def returnAllElements(self):
-        sql = "select * from tterapeuta"
+        sql = "select * from terapeuta"
         self.cursor.execute(sql)
         return self.cursor.fetchall()
 
     def Delete(self, ref):
-        sql = "delete from tterapeuta where idtterapeuta = '{}'".format(ref)
+        sql = "delete from terapeuta where id_terapeuta = '{}'".format(ref)
         self.cursor.execute(sql)
         self.conn.commit()
 
     def UpdateItem(self, element, ref):
         # element contains the values and ref is the name of the item that we want change
 
-        sql = "update tterapeuta set nombre = '{}',apellidos = '{}', turno='{}', sueldo ='{}', especialidad='{}', cedula='{}'  where idtterapeuta = '{}'".format(
+        sql = "update terapeuta set nombre = '{}',apellidos = '{}', turno='{}', sueldo ='{}', especialidad='{}', cedula='{}'  where id_terapeuta = '{}'".format(
             element[0], element[1], element[2], element[3], element[4], element[5], ref)
         # execute the query
         self.cursor.execute(sql)

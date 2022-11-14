@@ -77,7 +77,7 @@ class Home:
                                     overrelief="raise", image=self.imgT, command=lambda: self.moduloTerapeuta()).place(x=200, y=420, width=200, height=250)
 
         self.btn_paciente = Button(self.frame, font=('Segoe UI', 15), foreground=foreground, background=color3, text="Ingresar", borderwidth=2, relief="flat", cursor="hand1",
-                                   overrelief="raise", image=self.imgP, command=lambda: self.Option(2)).place(x=600, y=420, width=200, height=250)
+                                   overrelief="raise", image=self.imgP, command=lambda: self.modulo_paciente()).place(x=600, y=420, width=200, height=250)
 
         self.btn_cita = Button(self.frame, font=(font_family, 15), foreground=foreground, background=color3, text="Ingresar", borderwidth=2, relief="flat", cursor="hand1",
                                overrelief="raise", image=self.imgC, command=lambda: self.Option(3)).place(x=1000, y=420, width=200, height=250)
@@ -133,7 +133,7 @@ class Home:
                 self.btn_eliminar_tera.config(state=NORMAL)
 
         def limpiar_campos():
-            self.ClearEntryT()
+            self.limpiar_campos_terapeuta()
             self.btn_nuevo_tera.config(state=NORMAL)
             self.btn_modificar_tera.config(state=DISABLED)
             self.btn_eliminar_tera.config(state=DISABLED)
@@ -273,7 +273,7 @@ class Home:
         self.llenar_tabla_terapeuta()
         self.lbl_messages.config(
             text="Registro correcto", fg="green", bg=background)
-        self.ClearEntryT()
+        self.limpiar_campos_terapeuta()
 
     def eliminar_terapeuta(self, popT):
         id = self.list_elemtsT.selection()[0]
@@ -283,7 +283,7 @@ class Home:
             self.list_elemtsT.delete(id)
             self.lbl_messages.config(
                 text="Terapeuta eliminado", fg="#d2b440", bg=background)
-            self.ClearEntryT()
+            self.limpiar_campos_terapeuta()
             self.btn_nuevo_tera.config(state=NORMAL)
             self.btn_eliminar_tera.config(state=DISABLED)
             self.btn_modificar_tera.config(state=DISABLED)
@@ -300,51 +300,10 @@ class Home:
         self.lbl_messages.config(
             text="Terapeuta modificado correctamente", fg="green")
         self.llenar_tabla_terapeuta()
-        self.ClearEntryT()
+        self.limpiar_campos_terapeuta()
         self.btn_nuevo_tera.config(state=NORMAL)
         self.btn_eliminar_tera.config(state=DISABLED)
         self.btn_modificar_tera.config(state=DISABLED)
-
-    def getRowT(self, event):
-        idterap = StringVar()
-        nomT = StringVar()
-        apeT = StringVar()
-        tuT = StringVar()
-        suT = StringVar()
-        esT = StringVar()
-        ceT = StringVar()
-
-        rowName = self.list_elemtsT.identify_row(event.y)
-        item = self.list_elemtsT.item(self.list_elemtsT.focus())
-        idtt = item['values'][0]
-        nt = item['values'][1]
-        at = item['values'][2]
-        tt = item['values'][3]
-        st = item['values'][4]
-        et = item['values'][5]
-        ct = item['values'][6]
-
-        idterap.set(idtt)
-        nomT.set(nt)
-        apeT.set(at)
-        tuT.set(tt)
-        suT.set(st)
-        esT.set(et)
-        ceT.set(ct)
-        popTE = Toplevel(self.popT)
-        popTE.geometry("400x200")
-        lbl_n = Entry(popTE, textvariable=idterap,
-                      state=DISABLED).place(x=40, y=40)
-        lbl_e = Entry(popTE, textvariable=nomT).place(x=40, y=80)
-        lbl_c = Entry(popTE, textvariable=apeT).place(x=40, y=120)
-        lbl_t = Entry(popTE, textvariable=tuT).place(x=40, y=160)
-        lbl_s = Entry(popTE, textvariable=suT).place(x=40, y=200)
-        lbl_e = Entry(popTE, textvariable=esT).place(x=40, y=240)
-        lbl_ce = Entry(popTE, textvariable=ceT).place(x=40, y=280)
-        btn_change = Button(popTE, text="Actualizar", relief="flat", background="#00CE54", foreground="white", command=lambda: self.editarT(
-            idtt, idterap.get(), nomT.get(), apeT.get(), tuT.get(), suT.get(), esT.get(), ceT.get(), popTE)).place(x=180, y=160, width=90)
-        btn_delete = Button(popTE, text="Eliminar", relief="flat", background="red", foreground="white",
-                            command=lambda: self.eliminarT(idtt, popTE)).place(x=290, y=160, width=90)
 
     def eliminarT(self, idtt, popTE):
         d = Data()
@@ -355,7 +314,7 @@ class Home:
         #                     message="Se ha borrado con exito")
         self.ClearListT()
         self.DrawListT(self.popT)
-        self.ClearEntryT()
+        self.limpiar_campos_terapeuta()
 
     def editarT(self, idtt, idterap, nom, ape, tu, su, es, ce, popTE):
         arr = [idterap, nom, ape, tu, su, es, ce]
@@ -366,15 +325,12 @@ class Home:
         #                     message="Se han actualizado los datos")
         self.ClearListT()
         self.DrawListT(self.popT)
-        self.ClearEntryT()
+        self.limpiar_campos_terapeuta()
 
     def ClearListT(self):
         self.list_elemtsT.delete(*self.list_elemtsT.get_children())
 
-    def canceProcessT(self):
-        self.ClearEntry()
-
-    def ClearEntryT(self):
+    def limpiar_campos_terapeuta(self):
         # self.idter.set("")
         self.nombreT.set("")
         self.apellidosT.set("")
@@ -385,3 +341,37 @@ class Home:
 
     def homT(self, popT):
         popT.destroy()
+# ********************* MODULO PACIENTE **********************
+
+    def modulo_paciente(self):
+        self.frame_paciente = Toplevel(self.frame)
+        self.frame_paciente.title("Paciente")
+        self.frame_paciente.state('zoomed')
+        self.marco = LabelFrame(self.frame_paciente,
+                                text="Formulario Paciente")
+        self.marco.place(x=270, y=80, width=1000, height=650)
+        self.marco.config(background=background)
+        self.components_paciente(self.marco)
+
+    def components_paciente(self, mp):
+        self.nombre_paciente = StringVar()
+        self.apellidos_paciente = StringVar()
+        self.email = StringVar()
+        self.descuento = IntVar()
+        self.condicion_fisica = StringVar()
+
+        # * ----------------------TITULO ------------------
+        self.lbl_titulo_paciente = Label(mp, foreground=foreground, font=(
+            font_family, 30), background=background, text="Paciente").grid(column=0, row=0)
+        # * --------------------- CAMPOS -------------------
+        self.lbl_nombre_p = Label(mp, foreground=foreground, font=(
+            font_family, 12), background=background, text="Nombre").grid(column=0, row=1)
+        self.txt_nombre_p = Entry(mp, font=(
+            font_family, 12), relief='flat', background=input_color, foreground=foreground)
+        self.txt_nombre_p.grid(column=1, row=0)
+
+        self.lbl_apellidos_p = Label(mp, foreground=foreground, font=(
+            font_family, 12), background=background, text="Apellidos").grid(column=2, row=1)
+        self.txt_apellidos_p = Entry(mp, font=(
+            font_family, 12), relief='flat', background=input_color, foreground=foreground)
+        self.txt_apellidos_p.grid(column=3, row=1)
