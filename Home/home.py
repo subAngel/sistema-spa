@@ -362,16 +362,73 @@ class Home:
 
         # * ----------------------TITULO ------------------
         self.lbl_titulo_paciente = Label(mp, foreground=foreground, font=(
-            font_family, 30), background=background, text="Paciente").grid(column=0, row=0)
+            font_family, 30), background=background, text="Paciente").grid(column=0, row=0, padx=170, columnspan=4)
         # * --------------------- CAMPOS -------------------
         self.lbl_nombre_p = Label(mp, foreground=foreground, font=(
-            font_family, 12), background=background, text="Nombre").grid(column=0, row=1)
+            font_family, 12), background=background, text="Nombre").grid(column=0, row=1, padx=140)
         self.txt_nombre_p = Entry(mp, font=(
             font_family, 12), relief='flat', background=input_color, foreground=foreground)
-        self.txt_nombre_p.grid(column=1, row=0)
+        self.txt_nombre_p.grid(column=1, row=1)
 
         self.lbl_apellidos_p = Label(mp, foreground=foreground, font=(
             font_family, 12), background=background, text="Apellidos").grid(column=2, row=1)
         self.txt_apellidos_p = Entry(mp, font=(
             font_family, 12), relief='flat', background=input_color, foreground=foreground)
         self.txt_apellidos_p.grid(column=3, row=1)
+
+        self.lbl_email_p = Label(mp, foreground=foreground, font=(
+            font_family, 12), background=background, text="Correo").grid(column=0, row=2, padx=140)
+        self.txt_correo_p = Entry(mp, font=(
+            font_family, 12), relief='flat', background=input_color, foreground=foreground)
+        self.txt_correo_p.grid(column=1, row=2)
+
+        self.lbl_descuento_p = Label(mp, foreground=foreground, font=(
+            font_family, 12), background=background, text="Descuento").grid(column=2, row=2)
+        self.txt_descuento_p = Entry(mp, font=(
+            font_family, 12), relief='flat', background=input_color, foreground=foreground)
+        self.txt_descuento_p.grid(column=3, row=2)
+
+        self.lbl_condicion_p = Label(mp, foreground=foreground, font=(
+            font_family, 12), relief="flat", text="Condición médica", background=background).grid(column=0, row=3, columnspan=4, padx=140)
+        self.txt_condicion_p = Text(mp, font=(
+            font_family, 12), background=input_color, foreground=foreground, height=3, width=45)
+        self.txt_condicion_p.grid(
+            column=0, row=4, columnspan=4, rowspan=2, padx=140)
+
+        # self.lbl_message_p = Label(mp, fg=foreground, font=(
+        #     font_family, 12), text="", background=background).grid(column=0, row=5, columnspan=4)
+        # * ------------------------------ TABLA --------------------------
+        self.tabla_pacientes = ttk.Treeview(mp)
+        self.tabla_pacientes.grid(
+            column=0, row=6, columnspan=5, pady=10, padx=160)
+        self.tabla_pacientes['columns'] = (
+            "ID", "NOMBRE", "APELLIDOS", "EMAIL", "DESCUENTO", "CONDICION")
+        self.tabla_pacientes.column("#0", width=0, stretch=NO)
+        self.tabla_pacientes.column("ID", width=40, anchor=CENTER)
+        self.tabla_pacientes.column("NOMBRE", width=100, anchor=CENTER)
+        self.tabla_pacientes.column("APELLIDOS", width=100, anchor=CENTER)
+        self.tabla_pacientes.column("EMAIL", width=200, anchor=CENTER)
+        self.tabla_pacientes.column("DESCUENTO", width=40, anchor=CENTER)
+        self.tabla_pacientes.column("CONDICION", width=100, anchor=CENTER)
+        self.tabla_pacientes.heading("#0", text="")
+        self.tabla_pacientes.heading("ID", text="ID")
+        self.tabla_pacientes.heading("NOMBRE", text="NOMBRE")
+        self.tabla_pacientes.heading("APELLIDOS", text="APELLIDOS")
+        self.tabla_pacientes.heading("EMAIL", text="EMAIL")
+        self.tabla_pacientes.heading("DESCUENTO", text="DESCUENTO")
+        self.tabla_pacientes.heading("CONDICION", text="CONDICION")
+
+        # TODO llenar tabla de pacientes
+
+        # * --------------------- botones ---------------------------------
+        self.btn_nuevo_p = Button(mp, foreground=foreground, text="NUEVO", font=(
+            font_family, 12), cursor="hand1", overrelief="raise", background="#B3FFAE")
+        self.btn_nuevo_p.grid(column=1, row=7)
+
+        self.btn_eliminar_p = Button(mp, foreground=foreground, text="ELIMINAR", font=(
+            font_family, 12), cursor="hand1", overrelief="raise", background="#b3ffae")
+        self.btn_eliminar_p.grid(column=2, row=7)
+
+        self.btn_modificar_p = Button(mp, foreground=foreground, text="MODIFICAR", font=(
+            font_family, 12), cursor="hand1", overrelief="raise", background="#b3ffae")
+        self.btn_modificar_p.grid(column=3, row=7)

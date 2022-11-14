@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: namastedb
+-- Host: 127.0.0.1    Database: spa_db
 -- ------------------------------------------------------
 -- Server version	8.0.30
 
@@ -16,6 +16,65 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `paciente`
+--
+
+DROP TABLE IF EXISTS `paciente`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `paciente` (
+  `id_paciente` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) NOT NULL,
+  `apellidos` varchar(45) NOT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `descuento` int DEFAULT NULL,
+  `condicion_salud` varchar(105) DEFAULT NULL,
+  PRIMARY KEY (`id_paciente`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `paciente`
+--
+
+LOCK TABLES `paciente` WRITE;
+/*!40000 ALTER TABLE `paciente` DISABLE KEYS */;
+/*!40000 ALTER TABLE `paciente` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `paciente_terapeuta`
+--
+
+DROP TABLE IF EXISTS `paciente_terapeuta`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `paciente_terapeuta` (
+  `id_p_t` int NOT NULL AUTO_INCREMENT,
+  `id_paciente` int NOT NULL,
+  `id_terapeuta` int NOT NULL,
+  `id_servicio` int NOT NULL,
+  `total` int NOT NULL,
+  PRIMARY KEY (`id_p_t`),
+  KEY `fk_paciente_idx` (`id_paciente`),
+  KEY `fk_terapeuta_idx` (`id_terapeuta`),
+  KEY `fk_servicio_idx` (`id_servicio`),
+  CONSTRAINT `fk_paciente` FOREIGN KEY (`id_paciente`) REFERENCES `paciente` (`id_paciente`),
+  CONSTRAINT `fk_servicio` FOREIGN KEY (`id_servicio`) REFERENCES `servicios` (`id_servicios`),
+  CONSTRAINT `fk_terapeuta` FOREIGN KEY (`id_terapeuta`) REFERENCES `terapeuta` (`id_terapeuta`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `paciente_terapeuta`
+--
+
+LOCK TABLES `paciente_terapeuta` WRITE;
+/*!40000 ALTER TABLE `paciente_terapeuta` DISABLE KEYS */;
+/*!40000 ALTER TABLE `paciente_terapeuta` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `reserva`
 --
 
@@ -23,13 +82,13 @@ DROP TABLE IF EXISTS `reserva`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reserva` (
-  `idreserva` int NOT NULL,
-  `fk_cliente` int NOT NULL,
+  `id_reserva` int NOT NULL AUTO_INCREMENT,
+  `pk_paciente` int NOT NULL,
   `fecha` date NOT NULL,
   `status_pago` tinyint NOT NULL,
-  PRIMARY KEY (`idreserva`),
-  KEY `fk_clientet_idx` (`fk_cliente`),
-  CONSTRAINT `fk_clientet` FOREIGN KEY (`fk_cliente`) REFERENCES `tcliente` (`idtcliente`)
+  PRIMARY KEY (`id_reserva`),
+  KEY `fk_paciente_idx` (`pk_paciente`),
+  CONSTRAINT `fk_paciente_reserva` FOREIGN KEY (`pk_paciente`) REFERENCES `paciente` (`id_paciente`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -43,113 +102,56 @@ LOCK TABLES `reserva` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `tablacl_ter`
+-- Table structure for table `servicios`
 --
 
-DROP TABLE IF EXISTS `tablacl_ter`;
+DROP TABLE IF EXISTS `servicios`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tablacl_ter` (
-  `id_tct` int NOT NULL AUTO_INCREMENT,
-  `idfk_cliente` int NOT NULL,
-  `idk_servicio` int NOT NULL,
-  `total` int NOT NULL,
-  PRIMARY KEY (`id_tct`),
-  KEY `fkcliente_idx` (`idfk_cliente`),
-  KEY `fk_serv_idx` (`idk_servicio`),
-  CONSTRAINT `fk_serv` FOREIGN KEY (`idk_servicio`) REFERENCES `tablaservicios` (`id_servicio`),
-  CONSTRAINT `fkcliente` FOREIGN KEY (`idfk_cliente`) REFERENCES `tcliente` (`idtcliente`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tablacl_ter`
---
-
-LOCK TABLES `tablacl_ter` WRITE;
-/*!40000 ALTER TABLE `tablacl_ter` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tablacl_ter` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `tablaservicios`
---
-
-DROP TABLE IF EXISTS `tablaservicios`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tablaservicios` (
-  `id_servicio` int NOT NULL,
-  `nombre` varchar(50) NOT NULL,
-  `monto` decimal(10,0) NOT NULL,
-  PRIMARY KEY (`id_servicio`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tablaservicios`
---
-
-LOCK TABLES `tablaservicios` WRITE;
-/*!40000 ALTER TABLE `tablaservicios` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tablaservicios` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `tcliente`
---
-
-DROP TABLE IF EXISTS `tcliente`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tcliente` (
-  `idtcliente` int NOT NULL,
+CREATE TABLE `servicios` (
+  `id_servicios` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
-  `apellidos` varchar(45) NOT NULL,
-  `email` varchar(45) NOT NULL,
-  `descuento` decimal(10,0) DEFAULT NULL,
-  `condicion_salud` varchar(500) NOT NULL,
-  PRIMARY KEY (`idtcliente`)
+  `monto` varchar(45) NOT NULL,
+  PRIMARY KEY (`id_servicios`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tcliente`
+-- Dumping data for table `servicios`
 --
 
-LOCK TABLES `tcliente` WRITE;
-/*!40000 ALTER TABLE `tcliente` DISABLE KEYS */;
-INSERT INTO `tcliente` VALUES (1,'Luz','Martinez Martine','wwr@gmail.com',500,'bien'),(2,'h','h','h',666,'ffffffss');
-/*!40000 ALTER TABLE `tcliente` ENABLE KEYS */;
+LOCK TABLES `servicios` WRITE;
+/*!40000 ALTER TABLE `servicios` DISABLE KEYS */;
+/*!40000 ALTER TABLE `servicios` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `tterapeuta`
+-- Table structure for table `terapeuta`
 --
 
-DROP TABLE IF EXISTS `tterapeuta`;
+DROP TABLE IF EXISTS `terapeuta`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tterapeuta` (
-  `idtterapeuta` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `terapeuta` (
+  `id_terapeuta` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
   `apellidos` varchar(45) NOT NULL,
   `turno` varchar(20) NOT NULL,
   `sueldo` int NOT NULL,
-  `especialidad` varchar(45) NOT NULL,
+  `especialidad` varchar(50) NOT NULL,
   `cedula` varchar(13) NOT NULL,
-  PRIMARY KEY (`idtterapeuta`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`id_terapeuta`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tterapeuta`
+-- Dumping data for table `terapeuta`
 --
 
-LOCK TABLES `tterapeuta` WRITE;
-/*!40000 ALTER TABLE `tterapeuta` DISABLE KEYS */;
-INSERT INTO `tterapeuta` VALUES (1,'Silvina','Pacheco Leon','Matutino',1000,'sin','1234G'),(2,'lalo','Juarez Montes','Matutino',5000,'sin','1234tg'),(4,'juan','perez','matutino',400,'sin','123v'),(9,'Matilde','Caballero','Matutino',88880,'espalda','profesional'),(13,'Desiree','Fuertes','Matutino',9992,'especialidad','2332923'),(14,'Gaizka','Infante','Vespertino',9992,'especialidad','23832321'),(15,'Adela ','Domingo','Vespertino',8882,'espalda','1981931393'),(16,'afdsf','afdaf','Matutino',233,'afdaf','2233252');
-/*!40000 ALTER TABLE `tterapeuta` ENABLE KEYS */;
+LOCK TABLES `terapeuta` WRITE;
+/*!40000 ALTER TABLE `terapeuta` DISABLE KEYS */;
+INSERT INTO `terapeuta` VALUES (1,'Angel','Zorrilla','Matutino',8000,'espalda','294829292');
+/*!40000 ALTER TABLE `terapeuta` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -164,7 +166,7 @@ CREATE TABLE `user` (
   `user` varchar(45) NOT NULL,
   `password` varchar(45) NOT NULL,
   PRIMARY KEY (`iduser`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -173,7 +175,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','root');
+INSERT INTO `user` VALUES (1,'admin','root'),(2,'admin','root'),(3,'angel','angel');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -186,4 +188,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-13 15:34:02
+-- Dump completed on 2022-11-14 16:48:13
