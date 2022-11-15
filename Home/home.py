@@ -205,7 +205,7 @@ class Home:
         self.list_elemtsT.bind("<<TreeviewSelect>>", seleccionar)
         # ---- end ---
         self.list_elemtsT.grid(
-            column=0, row=4, columnspan=7, padx=100, pady=80)
+            column=0, row=4, columnspan=7, padx=100, pady=20)
         self.list_elemtsT["columns"] = (
             "ID", "NOMBRE", "APELLIDOS", "TURNO", "SUELDO", "ESPECIALIDAD", "CEDULA")
         self.list_elemtsT.column("#0", anchor=CENTER, stretch=NO)
