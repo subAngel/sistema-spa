@@ -55,7 +55,7 @@ class Home:
             font_family, 100), background=background, text=". . .").place(x=600, y=150)
         # self.lbl_usuario = Label(self.frame, foreground="white", font=(
         #     8), background="#000000", text="Usuario").place(x=230, y=260)
-        # self.lbl_usuario = Label(self.frame, foreground="white", font=(
+        # self.lbl_usuario = Label(self.frame, foreground="white", font=(git
         #     8), background="#000000", text="Contraseña").place(x=220, y=340)
 
     def DrawImage(self):
