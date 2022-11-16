@@ -89,6 +89,19 @@ class Data:
             # return False
             print("exception")
 
+    def actualizar_paciente(self, args, id):
+        try:
+            sql = "update paciente set nombre = '{}',apellidos = '{}', email='{}', descuento={}, condicion_salud='{}'  where id_paciente = {};".format(
+                args[0], args[1], args[2], args[3], args[4], id)
+
+            print(args, id)
+            self.cursor.execute(sql)
+            self.conn.commit()
+            # return True
+        except:
+            # return False
+            print("exception")
+
     def checkuser(self, user, passw):
         sql = "select password from user where user='"+user+"'and password='"+passw+"'"
         self.cursor.execute(sql)
