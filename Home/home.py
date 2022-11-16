@@ -129,9 +129,6 @@ class Home:
         self.marcoP.config(background=background)
         # self.popT.geometry("3000x800")
 
-
-        
-
     def DrawComponents(self, popT):
         self.nombreT = StringVar()
         self.apellidosT = StringVar()
@@ -370,10 +367,8 @@ class Home:
         popT.destroy()
 
 
-
 # ********************* MODULO PACIENTE **********************
 
-   
 
     def components_paciente(self, mp):
         self.nombre_paciente = StringVar()
@@ -381,17 +376,18 @@ class Home:
         self.email = StringVar()
         self.descuento = IntVar()
         self.condicion_fisica = StringVar()
-        
 
         def seleccionar(event):
             id = self.tabla_pacientes.selection()[0]
             if id:
-                self.nombre_paciente.set(self.tabla_pacientes.item(id, "values")[1])
-                self.apellidos_paciente.set(self.tabla_pacientes.item(id, "values")[2])
+                self.nombre_paciente.set(
+                    self.tabla_pacientes.item(id, "values")[1])
+                self.apellidos_paciente.set(
+                    self.tabla_pacientes.item(id, "values")[2])
                 self.email.set(self.tabla_pacientes.item(id, "values")[3])
                 self.descuento.set(self.tabla_pacientes.item(id, "values")[4])
-                self.condicion_fisica.set(self.tabla_pacientes.item(id, "values")[5])
-                
+                self.condicion_fisica.set(
+                    self.tabla_pacientes.item(id, "values")[5])
 
                 self.btn_nuevo_p.config(state=DISABLED)
                 self.btn_modificar_p.config(state=NORMAL)
@@ -404,7 +400,7 @@ class Home:
         # * --------------------- CAMPOS -------------------
         self.lbl_nombre_p = Label(mp, foreground=foreground, font=(
             font_family, 12), background=background, text="Nombre").grid(column=0, row=1, padx=140)
-        
+
         self.txt_nombre_p = Entry(mp, font=(
             font_family, 12), relief='flat', background=input_color, foreground=foreground, textvariable=self.nombre_paciente)
         self.txt_nombre_p.grid(column=1, row=1)
@@ -423,8 +419,7 @@ class Home:
 
         self.lbl_descuento_p = Label(mp, foreground=foreground, font=(
             font_family, 12), background=background, text="Descuento").grid(column=2, row=2)
-        
-        
+
         self.txt_descuento_p = Entry(mp, font=(
             font_family, 12), relief='flat', background=input_color, foreground=foreground, textvariable=self.descuento)
         self.txt_descuento_p.grid(column=3, row=2)
@@ -432,17 +427,15 @@ class Home:
        # self.lbl_condicion_p = Label(mp, foreground=foreground, font=(
         #    font_family, 12), relief="flat", text="Condición médica", background=background).grid(column=0, row=3, columnspan=4, padx=140)
 
-        #self.txt_condicion_p = Text(mp, font=(
-         #   font_family, 12), background=input_color, foreground=foreground, height=3, width=45)
-        #self.txt_condicion_p.grid(
-         #   column=0, row=4, columnspan=4, rowspan=2, padx=140)
-        #self.txt_condicion_p=Entry(self.txt_condicion_p)
-
+        # self.txt_condicion_p = Text(mp, font=(
+        #   font_family, 12), background=input_color, foreground=foreground, height=3, width=45)
+        # self.txt_condicion_p.grid(
+        #   column=0, row=4, columnspan=4, rowspan=2, padx=140)
+        # self.txt_condicion_p=Entry(self.txt_condicion_p)
 
         self.lbl_condicion_p = Label(mp, foreground=foreground, font=(
             font_family, 12), background=background, text="Condicion").grid(column=0, row=3)
-        
-        
+
         self.txt_condicion_p = Entry(mp, font=(
             font_family, 12), relief='flat', background=input_color, foreground=foreground, textvariable=self.condicion_fisica, width=40)
         self.txt_condicion_p.grid(column=1, row=3, columnspan=3)
@@ -451,10 +444,7 @@ class Home:
         #     font_family, 12), text="", background=background).grid(column=0, row=5, columnspan=4)
         # * ------------------------------ TABLA --------------------------
         self.tabla_pacientes = ttk.Treeview(mp)
-        
-                
-        
-        
+
         self.tabla_pacientes.grid(
             column=0, row=6, columnspan=5, pady=10, padx=160)
         self.tabla_pacientes['columns'] = (
@@ -466,7 +456,7 @@ class Home:
         self.tabla_pacientes.column("EMAIL", width=200, anchor=CENTER)
         self.tabla_pacientes.column("DESCUENTO", width=40, anchor=CENTER)
         self.tabla_pacientes.column("CONDICION", width=100, anchor=CENTER)
-        
+
         self.tabla_pacientes.heading("#0", text="")
         self.tabla_pacientes.heading("ID", text="ID")
         self.tabla_pacientes.heading("NOMBRE", text="NOMBRE")
@@ -482,21 +472,24 @@ class Home:
         # * --------------------- botones ---------------------------------
         self.lbl_messagess = Label(mp, text=".", fg="green")
         self.lbl_messagess.grid(column=0, row=5)
-#--------------------------------------------------------------------------------------------------------------------------
-        
-        self.btn_nuevo_p = Button(mp, foreground=foreground, text="NUEVO", font=(
-            font_family, 12), cursor="hand1", overrelief="raise", background="#B3FFAE",command=lambda: self.nuevo_cliente(mp))
+# --------------------------------------------------------------------------------------------------------------------------
 
+        self.btn_nuevo_p = Button(mp, foreground=foreground, text="NUEVO", font=(
+            font_family, 12), cursor="hand1", overrelief="raise", background="#B3FFAE", command=lambda: self.nuevo_cliente(mp))
 
         self.btn_nuevo_p.grid(column=1, row=7)
 
         self.btn_eliminar_p = Button(mp, foreground=foreground, text="ELIMINAR", font=(
-            font_family, 12), cursor="hand1", overrelief="raise", background="#b3ffae",command=lambda: self.eliminar_cliente(mp))
+            font_family, 12), cursor="hand1", overrelief="raise", background="#b3ffae", command=lambda: self.eliminar_cliente(mp))
         self.btn_eliminar_p.grid(column=2, row=7)
 
         self.btn_modificar_p = Button(mp, foreground=foreground, text="MODIFICAR", font=(
-            font_family, 12), cursor="hand1", overrelief="raise", background="#b3ffae",command=lambda: self.modificar_cliente(mp))
+            font_family, 12), cursor="hand1", overrelief="raise", background="#b3ffae", command=lambda: self.modificar_cliente(mp))
         self.btn_modificar_p.grid(column=3, row=7)
+
+        self.btn_generar_cita = Button(mp, foreground=foreground, text="Generar Cita", font=(
+            font_family, 12), cursor="hand1", overrelief="raise", background="#b3ffae", command=lambda: self.generar_cita(mp))
+        self.btn_generar_cita.grid(column=3, row=8)
 
     def vaciar_tabla_cliente(self):
         filas = self.tabla_pacientes.get_children()
@@ -517,16 +510,16 @@ class Home:
         d = Data()
         arr = [self.nombre_paciente.get(), self.apellidos_paciente.get(), self.email.get(
         ), self.descuento.get(), self.condicion_fisica.get()]
-        
-        print("hii ",self.nombre_paciente.get())
+
+        print("hii ", self.nombre_paciente.get())
         d.InsertItemsC(arr)
         self.limpiar_campos_cliente()
         print("se guardo")
-        self.lbl_messagess.config( text="Registro correcto", fg="green", bg=background)
+        self.lbl_messagess.config(
+            text="Registro correcto", fg="green", bg=background)
         self.llenar_tabla_cliente()
         self.limpiar_campos_cliente()
-        
-    
+
     def eliminar_cliente(self, popT):
         id = self.tabla_pacientes.selection()[0]
         db = Data()
@@ -589,8 +582,21 @@ class Home:
         self.email.set("")
         self.descuento.set("")
         self.condicion_fisica.set("")
-        
 
+
+# TODO -------------------------------------------------------MODULO CITA----------------------------------------------
+
+    def generar_cita(self, padre):
+        self.padre = Toplevel(self.frame)
+        self.padre.title("Generar Cita")
+        ancho = self.frame.winfo_screenwidth()
+        alto = self.frame.winfo_screenheight()
+        self.padre.geometry("{}x{}".format(740, 650))
+        self.marcoCita = LabelFrame(self.padre, text="Formulario de Cliente")
+
+        self.marcoCita.place(x=50, y=50, width=500, height=400)
+
+        self.marcoCita.config(background=background)
 
     def homT(self, popT):
         popT.destroy()
