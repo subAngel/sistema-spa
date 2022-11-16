@@ -341,27 +341,8 @@ class Home:
         self.especialidadT.set("")
         self.cedulaT.set("")
 
-    def eliminarT(self, idtt, popTE):
-        d = Data()
-        print(idtt)
-        d.Delete(idtt)
-        popTE.destroy()
-        # messagebox.showinfo(title="Eliminacion",
-        #                     message="Se ha borrado con exito")
-        self.ClearListT()
-        self.DrawListT(self.popT)
-        self.limpiar_campos_terapeuta()
-
-    def editarT(self, idtt, idterap, nom, ape, tu, su, es, ce, popTE):
-        arr = [idterap, nom, ape, tu, su, es, ce]
-        d = Data()
-        d.UpdateItem(arr, idtt)
-        popTE.destroy()
-        # messagebox.showinfo(title="Actualizacion",
-        #                     message="Se han actualizado los datos")
-        self.ClearListT()
-        self.DrawListT(self.popT)
-        self.limpiar_campos_terapeuta()
+    
+    
 
     def ClearListT(self):
         self.list_elemtsT.delete(*self.list_elemtsT.get_children())
@@ -393,7 +374,7 @@ class Home:
                 self.condicion_fisica.set(self.tabla_pacientes.item(id, "values")[5])
                 
 
-                self.btn_nuevo_p.config(state=DISABLED)
+                self.btn_nuevo_p.config(state=NORMAL)
                 self.btn_modificar_p.config(state=NORMAL)
                 self.btn_eliminar_p.config(state=NORMAL)
 
@@ -453,7 +434,7 @@ class Home:
         self.tabla_pacientes = ttk.Treeview(mp)
         
                 
-        
+        self.tabla_pacientes.bind("<<TreeviewSelect>>", seleccionar)
         
         self.tabla_pacientes.grid(
             column=0, row=6, columnspan=5, pady=10, padx=160)
@@ -526,7 +507,9 @@ class Home:
         self.llenar_tabla_cliente()
         self.limpiar_campos_cliente()
         
-    
+    def getID(id):
+        return id
+
     def eliminar_cliente(self, popT):
         id = self.tabla_pacientes.selection()[0]
         db = Data()
@@ -534,7 +517,7 @@ class Home:
             db.DeleteC(int(id))
             self.tabla_pacientes.delete(id)
             self.lbl_messagess.config(
-                text="Cliente eliminado", fg="#d2b440", bg=background)
+                text="Paciente eliminado", fg="#d2b440", bg=background)
             self.limpiar_campos_cliente()
             self.btn_nuevo_p.config(state=NORMAL)
             self.btn_eliminar_p.config(state=NORMAL)
@@ -543,41 +526,28 @@ class Home:
             self.lbl_messagess.config(
                 text="Seleccione un registro", fg="#eb6736", bg=background)
 
-    def modificar_cliente(self):
-        arr = [self.nombreT.get(), self.apellidosT.get(), self.combo_turno.get(
-        ), self.sueldoT.get(), self.especialidadT.get(), self.cedulaT.get()]
-        id = self.list_elemtsT.selection()[0]
+    
+    def modificar_cliente(self, marco):
+       
+        arr = [self.nombre_paciente.get(), self.apellidos_paciente.get(), self.email.get(
+        ), int(self.descuento.get()), self.condicion_fisica.get()]
+
+        id = int(self.tabla_pacientes.selection()[0])
+        print("idcc ", id)
         db = Data()
-        db.UpdateItemC(arr, int(id))
-        self.lbl_messages.config(
-            text="Terapeuta modificado correctamente", fg="green")
+        db.actualizar_paciente(arr, id)
+        self.lbl_messagess.config(
+            text="Paciente modificado correctamente", fg="green")
         self.llenar_tabla_cliente()
+        print("hii")
         self.limpiar_campos_cliente()
-        self.btn_nuevo_tera.config(state=NORMAL)
-        self.btn_eliminar_tera.config(state=DISABLED)
-        self.btn_modificar_tera.config(state=DISABLED)
+        self.btn_nuevo_p.config(state=NORMAL)
+        self.btn_eliminar_p.config(state=NORMAL)
+        self.btn_modificar_p.config(state=NORMAL)
+        print("-----------------------------------")
 
-    def eliminarT(self, idtt, popTE):
-        d = Data()
-        print(idtt)
-        d.DeleteC(idtt)
-        popTE.destroy()
-        # messagebox.showinfo(title="Eliminacion",
-        #                     message="Se ha borrado con exito")
-        self.ClearListT()
-        self.DrawListT(self.popT)
-        self.limpiar_campos_cliente()
 
-    def editarT(self, idtt, idterap, nom, ape, tu, su, es, ce, popTE):
-        arr = [idterap, nom, ape, tu, su, es, ce]
-        d = Data()
-        d.UpdateItem(arr, idtt)
-        popTE.destroy()
-        # messagebox.showinfo(title="Actualizacion",
-        #                     message="Se han actualizado los datos")
-        self.ClearListT()
-        self.DrawListT(self.popT)
-        self.limpiar_campos_cliente()
+         
 
     def ClearListT(self):
         self.list_elemtsT.delete(*self.list_elemtsT.get_children())

@@ -70,7 +70,7 @@ class Data:
         self.cursor.execute(sql)
         self.conn.commit() 
 
-
+    
     def UpdateItem(self, element, ref):
         # element contains the values and ref is the name of the item that we want change
 
@@ -79,11 +79,25 @@ class Data:
         # execute the query
         self.cursor.execute(sql)
         self.conn.commit()  # guardamos cambios
-
+    
     def actualizar_terapeuta(self, args, id):
         try:
             sql = "update terapeuta set nombre = '{}',apellidos = '{}', turno='{}', sueldo={}, especialidad='{}', cedula='{}'  where id_terapeuta = {};".format(
                 args[0], args[1], args[2], args[3], args[4], args[5], id)
+            print(args, id)
+            self.cursor.execute(sql)
+            self.conn.commit()
+            # return True
+        except:
+            # return False
+            print("exception")
+
+    def actualizar_paciente(self, args, id):
+        try:
+            sql = "update paciente set nombre = '{}',apellidos = '{}', email='{}', descuento={}, condicion_salud='{}'  where id_paciente = {};".format(
+                args[0], args[1], args[2], args[3], args[4], id)
+
+        
             print(args, id)
             self.cursor.execute(sql)
             self.conn.commit()
