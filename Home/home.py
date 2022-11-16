@@ -1,11 +1,11 @@
+import ctypes
 from re import T
 from tkinter import *
-from Database.database import *
-from tkinter import messagebox
-from PIL import ImageTk, Image
-from tkinter import ttk
-import ctypes
+from tkinter import messagebox, ttk
 
+from PIL import Image, ImageTk
+
+from Database.database import *
 
 # * COLORES
 color1 = "#FAF7F0"
@@ -120,17 +120,22 @@ class Home:
         self.cedulaT = StringVar()
 
         def seleccionar(event):
-            id = self.list_elemtsT.selection()[0]
-            if id:
-                self.nombreT.set(self.list_elemtsT.item(id, "values")[1])
-                self.apellidosT.set(self.list_elemtsT.item(id, "values")[2])
-                self.turnoT.set(self.list_elemtsT.item(id, "values")[3])
-                self.sueldoT.set(self.list_elemtsT.item(id, "values")[4])
-                self.especialidadT.set(self.list_elemtsT.item(id, "values")[5])
-                self.cedulaT.set(self.list_elemtsT.item(id, "values")[6])
-                self.btn_nuevo_tera.config(state=DISABLED)
-                self.btn_modificar_tera.config(state=NORMAL)
-                self.btn_eliminar_tera.config(state=NORMAL)
+            try:
+                id = self.list_elemtsT.selection()[0]
+                if id:
+                    self.nombreT.set(self.list_elemtsT.item(id, "values")[1])
+                    self.apellidosT.set(
+                        self.list_elemtsT.item(id, "values")[2])
+                    self.turnoT.set(self.list_elemtsT.item(id, "values")[3])
+                    self.sueldoT.set(self.list_elemtsT.item(id, "values")[4])
+                    self.especialidadT.set(
+                        self.list_elemtsT.item(id, "values")[5])
+                    self.cedulaT.set(self.list_elemtsT.item(id, "values")[6])
+                    self.btn_nuevo_tera.config(state=DISABLED)
+                    self.btn_modificar_tera.config(state=NORMAL)
+                    self.btn_eliminar_tera.config(state=NORMAL)
+            except:
+                print("Warning seleccionar()")
 
         def limpiar_campos():
             self.limpiar_campos_terapeuta()
@@ -246,9 +251,6 @@ class Home:
         self.btn_modificar_tera = Button(popT, text="MODIFICAR", foreground="white", font=(font_family, 13),
                                          borderwidth=2, relief="flat", cursor="hand1", overrelief="raise",
                                          background="#B1AFFF", command=lambda: self.modificar_terapeuta(popT))
-        # self.btn_modificar_tera = Button(popT, font=(font_family, 13), foreground="#222",
-        #                                  text="EDITAR", borderwidth=2, relief="flat", cursor="hand1", overrelief="raise",
-        #                                  background="#B1AFFF", command=lambda: self.modificar_terapeuta(popT))
         self.btn_modificar_tera.grid(column=3, row=5)
 
     # * MODIFICACIONES ANGEL
@@ -268,12 +270,15 @@ class Home:
     def nuevo_terapeuta(self, popT):
         d = Data()
         arr = [self.nombreT.get(), self.apellidosT.get(), self.combo_turno.get(
-        ), self.sueldoT.get(), self.especialidadT.get(), self.cedulaT.get()]
+        ), int(self.sueldoT.get()), self.especialidadT.get(), self.cedulaT.get()]
         d.InsertItems(arr)
         self.llenar_tabla_terapeuta()
         self.lbl_messages.config(
             text="Registro correcto", fg="green", bg=background)
         self.limpiar_campos_terapeuta()
+
+    def getID(id):
+        return id
 
     def eliminar_terapeuta(self, popT):
         id = self.list_elemtsT.selection()[0]
@@ -291,12 +296,12 @@ class Home:
             self.lbl_messages.config(
                 text="Seleccione un registro", fg="#eb6736", bg=background)
 
-    def modificar_terapeuta(self):
+    def modificar_terapeuta(self, marco):
         arr = [self.nombreT.get(), self.apellidosT.get(), self.combo_turno.get(
-        ), self.sueldoT.get(), self.especialidadT.get(), self.cedulaT.get()]
-        id = self.list_elemtsT.selection()[0]
+        ), int(self.sueldoT.get()), self.especialidadT.get(), self.cedulaT.get()]
+        id = int(self.list_elemtsT.selection()[0])
         db = Data()
-        db.UpdateItem(arr, int(id))
+        db.actualizar_terapeuta(arr, id)
         self.lbl_messages.config(
             text="Terapeuta modificado correctamente", fg="green")
         self.llenar_tabla_terapeuta()
@@ -304,6 +309,16 @@ class Home:
         self.btn_nuevo_tera.config(state=NORMAL)
         self.btn_eliminar_tera.config(state=DISABLED)
         self.btn_modificar_tera.config(state=DISABLED)
+        print("-----------------------------------")
+
+    def limpiar_campos_terapeuta(self):
+        # self.idter.set("")
+        self.nombreT.set("")
+        self.apellidosT.set("")
+        self.combo_turno.set("")
+        self.sueldoT.set("")
+        self.especialidadT.set("")
+        self.cedulaT.set("")
 
     def eliminarT(self, idtt, popTE):
         d = Data()
@@ -329,15 +344,6 @@ class Home:
 
     def ClearListT(self):
         self.list_elemtsT.delete(*self.list_elemtsT.get_children())
-
-    def limpiar_campos_terapeuta(self):
-        # self.idter.set("")
-        self.nombreT.set("")
-        self.apellidosT.set("")
-        self.combo_turno.set("")
-        self.sueldoT.set("")
-        self.especialidadT.set("")
-        self.cedulaT.set("")
 
     def homT(self, popT):
         popT.destroy()
