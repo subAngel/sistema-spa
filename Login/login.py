@@ -4,21 +4,20 @@ from Database.database2 import *
 from tkinter import messagebox
 from PIL import ImageTk, Image
 
+
 class Login:
     def __init__(self):
         self.frame = Tk()
         self.frame.title("Bienvenido al sistema")
         self.frame.config(background="#000000")
         self.frame.geometry("500x500+400+100")
-        self.frame.resizable(0,0)
+        self.frame.resizable(0, 0)
         self.DrawEntry()
         self.DrawButtons()
         self.DrawLabel()
         # self.DrawList()
         self.DrawImage()
         self.frame.mainloop()
-
-
 
     def DrawLabel(self):
         self.lbl_usuario = Label(self.frame, foreground="white", font=(
@@ -32,9 +31,9 @@ class Login:
         self.user = StringVar()
         self.password = StringVar()
 
-        self.c_user = Entry(self.frame,validate="key",font=('Times', 12), relief="flat", background="#E7E7E7",
+        self.c_user = Entry(self.frame, validate="key", font=('Times', 12), relief="flat", background="#E7E7E7",
                             textvariable=self.user).place(x=160, y=290, height=25, width=200)
-        self.c_password = Entry(self.frame, show="*",font=('Times', 12), relief="flat", background="#E7E7E7",
+        self.c_password = Entry(self.frame, show="*", font=('Times', 12), relief="flat", background="#E7E7E7",
                                 textvariable=self.password).place(x=160, y=370, height=25, width=200)
 
     def DrawImage(self):
@@ -51,14 +50,12 @@ class Login:
 
     def check(self):
         d = Data()
-        
-        res=d.checkuser(self.user.get(),self.password.get())
+
+        res = d.checkuser(self.user.get(), self.password.get())
         if res:
             # messagebox.showinfo(message="Bienvenid@", title="Bienvenid@")
             self.frame.destroy()
             Home()
         else:
-            messagebox.showerror(message="Credenciales incorrectas", title="Error")
-
-    
-
+            messagebox.showerror(
+                message="Credenciales incorrectas", title="Error")
