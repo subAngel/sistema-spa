@@ -2,10 +2,10 @@ import ctypes
 from re import T
 from tkinter import *
 from tkinter import messagebox, ttk
+from Database.database import *
 
 from PIL import Image, ImageTk
 
-from Database.database import *
 
 # * COLORES
 color1 = "#FAF7F0"
@@ -338,14 +338,8 @@ class Home:
         self.especialidadT.set("")
         self.cedulaT.set("")
 
-    
-    
-
     def ClearListT(self):
         self.list_elemtsT.delete(*self.list_elemtsT.get_children())
-
-    def homT(self, popT):
-        popT.destroy()
 
 
 # ********************* MODULO PACIENTE **********************
@@ -370,7 +364,7 @@ class Home:
                 self.condicion_fisica.set(
                     self.tabla_pacientes.item(id, "values")[5])
 
-                self.btn_nuevo_p.config(state=NORMAL)
+                self.btn_nuevo_p.config(state=DISABLED)
                 self.btn_modificar_p.config(state=NORMAL)
                 self.btn_eliminar_p.config(state=NORMAL)
 
@@ -425,14 +419,9 @@ class Home:
         #     font_family, 12), text="", background=background).grid(column=0, row=5, columnspan=4)
         # * ------------------------------ TABLA --------------------------
         self.tabla_pacientes = ttk.Treeview(mp)
-<<<<<<< HEAD
 
-=======
-        
-                
         self.tabla_pacientes.bind("<<TreeviewSelect>>", seleccionar)
-        
->>>>>>> 574785e26b808fda1b100cb8ba72425a422528a2
+
         self.tabla_pacientes.grid(
             column=0, row=6, columnspan=5, pady=10, padx=160)
         self.tabla_pacientes['columns'] = (
@@ -476,7 +465,7 @@ class Home:
         self.btn_modificar_p.grid(column=3, row=7)
 
         self.btn_generar_cita = Button(mp, foreground=foreground, text="Generar Cita", font=(
-            font_family, 12), cursor="hand1", overrelief="raise", background="#b3ffae", command=lambda: self.generar_cita(mp))
+            font_family, 12), cursor="hand1", overrelief="raise", background="#b3ffae", command=lambda: self.generar_reserva(mp))
         self.btn_generar_cita.grid(column=3, row=8)
 
     def vaciar_tabla_cliente(self):
@@ -507,12 +496,6 @@ class Home:
             text="Registro correcto", fg="green", bg=background)
         self.llenar_tabla_cliente()
         self.limpiar_campos_cliente()
-<<<<<<< HEAD
-=======
-        
-    def getID(id):
-        return id
->>>>>>> 574785e26b808fda1b100cb8ba72425a422528a2
 
     def eliminar_cliente(self, popT):
         id = self.tabla_pacientes.selection()[0]
@@ -521,7 +504,7 @@ class Home:
             db.DeleteC(int(id))
             self.tabla_pacientes.delete(id)
             self.lbl_messagess.config(
-                text="Paciente eliminado", fg="#d2b440", bg=background)
+                text="Cliente eliminado", fg="#d2b440", bg=background)
             self.limpiar_campos_cliente()
             self.btn_nuevo_p.config(state=NORMAL)
             self.btn_eliminar_p.config(state=NORMAL)
@@ -530,9 +513,8 @@ class Home:
             self.lbl_messagess.config(
                 text="Seleccione un registro", fg="#eb6736", bg=background)
 
-    
     def modificar_cliente(self, marco):
-       
+
         arr = [self.nombre_paciente.get(), self.apellidos_paciente.get(), self.email.get(
         ), int(self.descuento.get()), self.condicion_fisica.get()]
 
@@ -550,8 +532,27 @@ class Home:
         self.btn_modificar_p.config(state=NORMAL)
         print("-----------------------------------")
 
+    def eliminarT(self, idtt, popTE):
+        d = Data()
+        print(idtt)
+        d.DeleteC(idtt)
+        popTE.destroy()
+        # messagebox.showinfo(title="Eliminacion",
+        #                     message="Se ha borrado con exito")
+        self.ClearListT()
+        self.DrawListT(self.popT)
+        self.limpiar_campos_cliente()
 
-         
+    def editarT(self, idtt, idterap, nom, ape, tu, su, es, ce, popTE):
+        arr = [idterap, nom, ape, tu, su, es, ce]
+        d = Data()
+        d.UpdateItem(arr, idtt)
+        popTE.destroy()
+        # messagebox.showinfo(title="Actualizacion",
+        #                     message="Se han actualizado los datos")
+        self.ClearListT()
+        self.DrawListT(self.popT)
+        self.limpiar_campos_cliente()
 
     def ClearListT(self):
         self.list_elemtsT.delete(*self.list_elemtsT.get_children())
@@ -567,18 +568,102 @@ class Home:
 
 # TODO -------------------------------------------------------MODULO CITA----------------------------------------------
 
-    def generar_cita(self, padre):
+    def generar_reserva(self, padre):
         self.padre = Toplevel(self.frame)
         self.padre.title("Generar Cita")
         ancho = self.frame.winfo_screenwidth()
         alto = self.frame.winfo_screenheight()
-        self.padre.geometry("{}x{}".format(740, 650))
-        self.marcoCita = LabelFrame(self.padre, text="Formulario de Cliente")
+        self.padre.geometry("{}x{}".format(740, 550))
+        self.marcoReserva = LabelFrame(self.padre, text="Generar una reserva")
 
-        self.marcoCita.place(x=50, y=50, width=500, height=400)
+        self.marcoReserva.place(x=50, y=50, width=630, height=400)
+        self.marcoReserva.config(background=background)
+        self.components_reserva(self.marcoReserva)
 
-        self.marcoCita.config(background=background)
+    def components_reserva(self, mr):
+        # ? @mc es el marco reserva
+        self.status_pago = BooleanVar()
+        self.fecha_dia_reserva = StringVar()
+        self.fecha_mes_reserva = StringVar()
+        self.fecha_anio_reserva = StringVar()
 
-    def homT(self, popT):
-        popT.destroy()
-# **
+        self.titulo_reserva = Label(mr, foreground=foreground, font=(
+            font_family, 22), background=background, text="Reserva").grid(column=1, row=0, columnspan=3)
+
+        self.tabla_terapeuta_reserva = ttk.Treeview(mr)
+        # self.tabla_terapeuta_reserva.bind
+        self.tabla_terapeuta_reserva.grid(column=0, row=1, padx=10)
+        self.tabla_terapeuta_reserva['columns'] = ("ID", "TERAPEUTA")
+        self.tabla_terapeuta_reserva.column("#0", width=0, stretch=NO)
+        self.tabla_terapeuta_reserva.column("ID", width=30, anchor=CENTER)
+        self.tabla_terapeuta_reserva.column(
+            "TERAPEUTA", width=140, anchor=CENTER)
+        self.tabla_terapeuta_reserva.heading("#0", text="")
+        self.tabla_terapeuta_reserva.heading("ID", text="ID")
+        self.tabla_terapeuta_reserva.heading("TERAPEUTA", text="TERAPEUTA")
+
+        # * ----------------------tabla pacientes
+        self.tabla_pacientes_reserva = ttk.Treeview(mr)
+        self.tabla_pacientes_reserva.grid(column=1, row=1, padx=10)
+        self.tabla_pacientes_reserva['columns'] = ("ID", "PACIENTE")
+        self.tabla_pacientes_reserva.column("#0", width=0, stretch=NO)
+        self.tabla_pacientes_reserva.column("ID", width=30, anchor=CENTER)
+        self.tabla_pacientes_reserva.column(
+            "PACIENTE", width=140, anchor=CENTER)
+        self.tabla_pacientes_reserva.heading("#0", text="")
+        self.tabla_pacientes_reserva.heading("ID", text="ID")
+        self.tabla_pacientes_reserva.heading("PACIENTE", text="PACIENTE")
+
+        # * ---------------------tabla servicios
+        self.tabla_servicios_reserva = ttk.Treeview(mr)
+        self.tabla_servicios_reserva.grid(column=2, row=1, padx=10)
+        self.tabla_servicios_reserva['columns'] = ("ID", "SERVICIO")
+        self.tabla_servicios_reserva.column("#0", width=0, stretch=NO)
+        self.tabla_servicios_reserva.column("ID", width=30, anchor=CENTER)
+        self.tabla_servicios_reserva.column(
+            "SERVICIO", width=100, anchor=CENTER)
+        self.tabla_servicios_reserva.heading("#0", text="")
+        self.tabla_servicios_reserva.heading("ID", text="ID")
+        self.tabla_servicios_reserva.heading("SERVICIO", text="SERVICIO")
+
+        self.llenar_tablas_reserva()
+
+        # self.label_fecha = Label(mr, foreground=foreground, background=background, font=(
+        #     font_family, 12)).grid(column=1, row=1)
+        # self.combo_year_reserva = ttk.Combobox(
+        #     self, state="readonly", values=['2022', '2023', '2024', 2025], width=10).grid(column=2, row=1)
+        # self.combo_month_reserva = ttk.Combobox(mr, state="readonly", values=[
+        #     "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"], width=10).grid(column=3, row=1)
+        # self.combo_day_reserva = ttk.Combobox(mr, state="readonly", values=[
+        #     "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "21", "23", "24", "25", "26", "27", "28", "29", "30", "31"], width=10).grid(column=4, row=1)
+
+    def vaciar_tabla_reserva(self):
+        filas_tera = self.tabla_terapeuta_reserva.get_children()
+        for fila in filas_tera:
+            self.tabla_terapeuta_reserva.delete(fila)
+        filas_pac = self.tabla_pacientes_reserva.get_children()
+        for fila in filas_pac:
+            self.tabla_pacientes_reserva.delete(fila)
+        fila_ser = self.tabla_servicios_reserva.get_children()
+        for fila in fila_ser:
+            self.tabla_servicios_reserva.delete(fila)
+
+    def llenar_tablas_reserva(self):
+        self.vaciar_tabla_reserva()
+        db = Data()
+        self.filas_tera = db.return_list_terapeutas()
+        for fila in self.filas_tera:
+            id = fila[0]
+            self.tabla_terapeuta_reserva.insert(
+                "", END, id, text=id, values=fila)
+
+        self.filas_pac = db.return_list_pacientes()
+        for fila in self.filas_pac:
+            id = fila[0]
+            self.tabla_pacientes_reserva.insert(
+                "", END, id, text=id, values=fila)
+        self.filas_serv = db.return_list_servicios()
+        for fila in self.filas_serv:
+            id = fila[0]
+            self.tabla_servicios_reserva.insert(
+                "", END, id, text=id, values=fila)

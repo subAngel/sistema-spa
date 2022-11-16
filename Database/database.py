@@ -115,6 +115,16 @@ class Data:
         # 	print(i)
 
     def return_list_terapeutas(self):
-        sql = "select nombre from terapeuta"
+        sql = "select id_terapeuta, concat_ws(' ', nombre, apellidos) as terapeuta from terapeuta"
+        self.cursor.execute(sql)
+        return self.cursor.fetchall()
+
+    def return_list_pacientes(self):
+        sql = "select id_paciente, concat_ws(' ', nombre, apellidos) as paciente from paciente"
+        self.cursor.execute(sql)
+        return self.cursor.fetchall()
+
+    def return_list_servicios(self):
+        sql = "select id_servicios, nombre from servicios"
         self.cursor.execute(sql)
         return self.cursor.fetchall()
