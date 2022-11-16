@@ -77,7 +77,7 @@ class Home:
                                     overrelief="raise", image=self.imgT, command=lambda: self.moduloTerapeuta()).place(x=200, y=420, width=200, height=250)
 
         self.btn_paciente = Button(self.frame, font=('Segoe UI', 15), foreground=foreground, background=color3, text="Ingresar", borderwidth=2, relief="flat", cursor="hand1",
-                                   overrelief="raise", image=self.imgP, command=lambda: self.modulo_paciente()).place(x=600, y=420, width=200, height=250)
+                                   overrelief="raise", image=self.imgP, command=lambda: self.moduloPaciente()).place(x=600, y=420, width=200, height=250)
 
         self.btn_cita = Button(self.frame, font=(font_family, 15), foreground=foreground, background=color3, text="Ingresar", borderwidth=2, relief="flat", cursor="hand1",
                                overrelief="raise", image=self.imgC, command=lambda: self.Option(3)).place(x=1000, y=420, width=200, height=250)
@@ -110,6 +110,27 @@ class Home:
         # self.DrawListT(self.marco)
         self.marco.config(background=background)
         # self.popT.geometry("3000x800")
+
+    def moduloPaciente(self):
+        self.popP = Toplevel(self.frame)
+        self.popP.title("Cliente")
+        # popT.attributes('-topmost',True)
+        self.popP.state('zoomed')
+        ancho = self.frame.winfo_screenwidth()
+        alto = self.frame.winfo_screenheight()
+        self.frame.geometry("{}x{}".format(ancho, alto))
+        self.marcoP = LabelFrame(self.popP, text="Formulario de Cliente")
+
+        self.marcoP.place(x=300, y=80, width=1000, height=alto-150)
+        self.components_paciente(self.marcoP)
+        # self.DrawButtonsT(self.marco)
+        # self.DrawEntryT(self.marco)
+        # self.DrawListT(self.marco)
+        self.marcoP.config(background=background)
+        # self.popT.geometry("3000x800")
+
+
+        
 
     def DrawComponents(self, popT):
         self.nombreT = StringVar()
@@ -341,17 +362,12 @@ class Home:
 
     def homT(self, popT):
         popT.destroy()
+
+
+
 # ********************* MODULO PACIENTE **********************
 
-    def modulo_paciente(self):
-        self.frame_paciente = Toplevel(self.frame)
-        self.frame_paciente.title("Paciente")
-        self.frame_paciente.state('zoomed')
-        self.marco = LabelFrame(self.frame_paciente,
-                                text="Formulario Paciente")
-        self.marco.place(x=270, y=80, width=1000, height=650)
-        self.marco.config(background=background)
-        self.components_paciente(self.marco)
+   
 
     def components_paciente(self, mp):
         self.nombre_paciente = StringVar()
@@ -359,46 +375,80 @@ class Home:
         self.email = StringVar()
         self.descuento = IntVar()
         self.condicion_fisica = StringVar()
+        
+
+        def seleccionar(event):
+            id = self.tabla_pacientes.selection()[0]
+            if id:
+                self.nombre_paciente.set(self.tabla_pacientes.item(id, "values")[1])
+                self.apellidos_paciente.set(self.tabla_pacientes.item(id, "values")[2])
+                self.email.set(self.tabla_pacientes.item(id, "values")[3])
+                self.descuento.set(self.tabla_pacientes.item(id, "values")[4])
+                self.condicion_fisica.set(self.tabla_pacientes.item(id, "values")[5])
+                
+
+                self.btn_nuevo_p.config(state=DISABLED)
+                self.btn_modificar_p.config(state=NORMAL)
+                self.btn_eliminar_p.config(state=NORMAL)
 
         # * ----------------------TITULO ------------------
         self.lbl_titulo_paciente = Label(mp, foreground=foreground, font=(
             font_family, 30), background=background, text="Paciente").grid(column=0, row=0, padx=170, columnspan=4)
+
         # * --------------------- CAMPOS -------------------
         self.lbl_nombre_p = Label(mp, foreground=foreground, font=(
             font_family, 12), background=background, text="Nombre").grid(column=0, row=1, padx=140)
+        
         self.txt_nombre_p = Entry(mp, font=(
-            font_family, 12), relief='flat', background=input_color, foreground=foreground)
+            font_family, 12), relief='flat', background=input_color, foreground=foreground, textvariable=self.nombre_paciente)
         self.txt_nombre_p.grid(column=1, row=1)
 
         self.lbl_apellidos_p = Label(mp, foreground=foreground, font=(
             font_family, 12), background=background, text="Apellidos").grid(column=2, row=1)
         self.txt_apellidos_p = Entry(mp, font=(
-            font_family, 12), relief='flat', background=input_color, foreground=foreground)
+            font_family, 12), relief='flat', background=input_color, foreground=foreground, textvariable=self.apellidos_paciente)
         self.txt_apellidos_p.grid(column=3, row=1)
 
         self.lbl_email_p = Label(mp, foreground=foreground, font=(
             font_family, 12), background=background, text="Correo").grid(column=0, row=2, padx=140)
         self.txt_correo_p = Entry(mp, font=(
-            font_family, 12), relief='flat', background=input_color, foreground=foreground)
+            font_family, 12), relief='flat', background=input_color, foreground=foreground, textvariable=self.email)
         self.txt_correo_p.grid(column=1, row=2)
 
         self.lbl_descuento_p = Label(mp, foreground=foreground, font=(
             font_family, 12), background=background, text="Descuento").grid(column=2, row=2)
+        
+        
         self.txt_descuento_p = Entry(mp, font=(
-            font_family, 12), relief='flat', background=input_color, foreground=foreground)
+            font_family, 12), relief='flat', background=input_color, foreground=foreground, textvariable=self.descuento)
         self.txt_descuento_p.grid(column=3, row=2)
 
+       # self.lbl_condicion_p = Label(mp, foreground=foreground, font=(
+        #    font_family, 12), relief="flat", text="Condición médica", background=background).grid(column=0, row=3, columnspan=4, padx=140)
+
+        #self.txt_condicion_p = Text(mp, font=(
+         #   font_family, 12), background=input_color, foreground=foreground, height=3, width=45)
+        #self.txt_condicion_p.grid(
+         #   column=0, row=4, columnspan=4, rowspan=2, padx=140)
+        #self.txt_condicion_p=Entry(self.txt_condicion_p)
+
+
         self.lbl_condicion_p = Label(mp, foreground=foreground, font=(
-            font_family, 12), relief="flat", text="Condición médica", background=background).grid(column=0, row=3, columnspan=4, padx=140)
-        self.txt_condicion_p = Text(mp, font=(
-            font_family, 12), background=input_color, foreground=foreground, height=3, width=45)
-        self.txt_condicion_p.grid(
-            column=0, row=4, columnspan=4, rowspan=2, padx=140)
+            font_family, 12), background=background, text="Condicion").grid(column=0, row=3)
+        
+        
+        self.txt_condicion_p = Entry(mp, font=(
+            font_family, 12), relief='flat', background=input_color, foreground=foreground, textvariable=self.condicion_fisica, width=40)
+        self.txt_condicion_p.grid(column=1, row=3, columnspan=3)
 
         # self.lbl_message_p = Label(mp, fg=foreground, font=(
         #     font_family, 12), text="", background=background).grid(column=0, row=5, columnspan=4)
         # * ------------------------------ TABLA --------------------------
         self.tabla_pacientes = ttk.Treeview(mp)
+        
+                
+        
+        
         self.tabla_pacientes.grid(
             column=0, row=6, columnspan=5, pady=10, padx=160)
         self.tabla_pacientes['columns'] = (
@@ -410,6 +460,7 @@ class Home:
         self.tabla_pacientes.column("EMAIL", width=200, anchor=CENTER)
         self.tabla_pacientes.column("DESCUENTO", width=40, anchor=CENTER)
         self.tabla_pacientes.column("CONDICION", width=100, anchor=CENTER)
+        
         self.tabla_pacientes.heading("#0", text="")
         self.tabla_pacientes.heading("ID", text="ID")
         self.tabla_pacientes.heading("NOMBRE", text="NOMBRE")
@@ -418,17 +469,123 @@ class Home:
         self.tabla_pacientes.heading("DESCUENTO", text="DESCUENTO")
         self.tabla_pacientes.heading("CONDICION", text="CONDICION")
 
+        self.llenar_tabla_cliente()
+
         # TODO llenar tabla de pacientes
 
         # * --------------------- botones ---------------------------------
+        self.lbl_messagess = Label(mp, text=".", fg="green")
+        self.lbl_messagess.grid(column=0, row=5)
+#--------------------------------------------------------------------------------------------------------------------------
+        
         self.btn_nuevo_p = Button(mp, foreground=foreground, text="NUEVO", font=(
-            font_family, 12), cursor="hand1", overrelief="raise", background="#B3FFAE")
+            font_family, 12), cursor="hand1", overrelief="raise", background="#B3FFAE",command=lambda: self.nuevo_cliente(mp))
+
+
         self.btn_nuevo_p.grid(column=1, row=7)
 
         self.btn_eliminar_p = Button(mp, foreground=foreground, text="ELIMINAR", font=(
-            font_family, 12), cursor="hand1", overrelief="raise", background="#b3ffae")
+            font_family, 12), cursor="hand1", overrelief="raise", background="#b3ffae",command=lambda: self.eliminar_cliente(mp))
         self.btn_eliminar_p.grid(column=2, row=7)
 
         self.btn_modificar_p = Button(mp, foreground=foreground, text="MODIFICAR", font=(
-            font_family, 12), cursor="hand1", overrelief="raise", background="#b3ffae")
+            font_family, 12), cursor="hand1", overrelief="raise", background="#b3ffae",command=lambda: self.modificar_cliente(mp))
         self.btn_modificar_p.grid(column=3, row=7)
+
+    def vaciar_tabla_cliente(self):
+        filas = self.tabla_pacientes.get_children()
+        for fila in filas:
+            self.tabla_pacientes.delete(fila)
+
+    def llenar_tabla_cliente(self):
+        self.vaciar_tabla_cliente()
+        d = Data()
+        self.filas = d.returnAllElementsC()
+        print(self.filas)
+        for fila in self.filas:
+            id = fila[0]
+            self.tabla_pacientes.insert("", END, id, text=id, values=fila)
+
+    def nuevo_cliente(self, mp):
+        print("hola")
+        d = Data()
+        arr = [self.nombre_paciente.get(), self.apellidos_paciente.get(), self.email.get(
+        ), self.descuento.get(), self.condicion_fisica.get()]
+        
+        print("hii ",self.nombre_paciente.get())
+        d.InsertItemsC(arr)
+        self.limpiar_campos_cliente()
+        print("se guardo")
+        self.lbl_messagess.config( text="Registro correcto", fg="green", bg=background)
+        self.llenar_tabla_cliente()
+        self.limpiar_campos_cliente()
+        
+    
+    def eliminar_cliente(self, popT):
+        id = self.tabla_pacientes.selection()[0]
+        db = Data()
+        if id:
+            db.DeleteC(int(id))
+            self.tabla_pacientes.delete(id)
+            self.lbl_messagess.config(
+                text="Cliente eliminado", fg="#d2b440", bg=background)
+            self.limpiar_campos_cliente()
+            self.btn_nuevo_p.config(state=NORMAL)
+            self.btn_eliminar_p.config(state=NORMAL)
+            self.btn_modificar_p.config(state=NORMAL)
+        else:
+            self.lbl_messagess.config(
+                text="Seleccione un registro", fg="#eb6736", bg=background)
+
+    def modificar_cliente(self):
+        arr = [self.nombreT.get(), self.apellidosT.get(), self.combo_turno.get(
+        ), self.sueldoT.get(), self.especialidadT.get(), self.cedulaT.get()]
+        id = self.list_elemtsT.selection()[0]
+        db = Data()
+        db.UpdateItemC(arr, int(id))
+        self.lbl_messages.config(
+            text="Terapeuta modificado correctamente", fg="green")
+        self.llenar_tabla_cliente()
+        self.limpiar_campos_cliente()
+        self.btn_nuevo_tera.config(state=NORMAL)
+        self.btn_eliminar_tera.config(state=DISABLED)
+        self.btn_modificar_tera.config(state=DISABLED)
+
+    def eliminarT(self, idtt, popTE):
+        d = Data()
+        print(idtt)
+        d.DeleteC(idtt)
+        popTE.destroy()
+        # messagebox.showinfo(title="Eliminacion",
+        #                     message="Se ha borrado con exito")
+        self.ClearListT()
+        self.DrawListT(self.popT)
+        self.limpiar_campos_cliente()
+
+    def editarT(self, idtt, idterap, nom, ape, tu, su, es, ce, popTE):
+        arr = [idterap, nom, ape, tu, su, es, ce]
+        d = Data()
+        d.UpdateItem(arr, idtt)
+        popTE.destroy()
+        # messagebox.showinfo(title="Actualizacion",
+        #                     message="Se han actualizado los datos")
+        self.ClearListT()
+        self.DrawListT(self.popT)
+        self.limpiar_campos_cliente()
+
+    def ClearListT(self):
+        self.list_elemtsT.delete(*self.list_elemtsT.get_children())
+
+    def limpiar_campos_cliente(self):
+        # self.idter.set("")
+        self.nombre_paciente.set("")
+        self.apellidos_paciente.set("")
+        self.email.set("")
+        self.descuento.set("")
+        self.condicion_fisica.set("")
+        
+
+
+    def homT(self, popT):
+        popT.destroy()
+# **

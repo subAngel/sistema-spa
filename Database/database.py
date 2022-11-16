@@ -23,6 +23,15 @@ class Data:
             element[0], element[1], element[2], element[3], element[4], element[5])
         # execute the query
         self.cursor.execute(sql)
+        self.conn.commit()  # guardamos 
+        
+    def InsertItemsC(self, element):
+        # our element contend the name, age and the carreer of the student
+        # in position 0, 1, 2
+        sql1 = "insert into paciente(nombre,apellidos,email,descuento,condicion_salud) values('{}', '{}', '{}','{}', '{}')".format(
+            element[0], element[1], element[2], element[3], element[4])
+        # execute the query
+        self.cursor.execute(sql1)
         self.conn.commit()  # guardamos cambios
 
     def ReturnOneItem(self, ref):
@@ -32,15 +41,35 @@ class Data:
         # return the element or nil
         return self.cursor.fetchone()
 
+
+    def ReturnOneItemC(self, ref):
+        # we have ref like name of the element
+        sql = "select * from paciente where nombre = '{}'".format(ref)
+        self.cursor.execute(sql)
+        # return the element or nil
+        return self.cursor.fetchone()
+
     def returnAllElements(self):
         sql = "select * from terapeuta"
         self.cursor.execute(sql)
         return self.cursor.fetchall()
+    
+    def returnAllElementsC(self):
+        sql = "select * from paciente"
+        self.cursor.execute(sql)
+        return self.cursor.fetchall()
+    
 
     def Delete(self, ref):
         sql = "delete from terapeuta where id_terapeuta = '{}'".format(ref)
         self.cursor.execute(sql)
         self.conn.commit()
+
+    def DeleteC(self, ref):
+        sql = "delete from paciente where id_paciente = '{}'".format(ref)
+        self.cursor.execute(sql)
+        self.conn.commit() 
+
 
     def UpdateItem(self, element, ref):
         # element contains the values and ref is the name of the item that we want change
@@ -50,6 +79,17 @@ class Data:
         # execute the query
         self.cursor.execute(sql)
         self.conn.commit()  # guardamos cambios
+
+    
+    def UpdateItemC(self, element, ref):
+        # element contains the values and ref is the name of the item that we want change
+
+        sql = "update paciente set  nombre = '{}',apellidos = '{}', email='{}', descuento ='{}', condicion_salud='{}'  where id_paciente = '{}'".format(
+            element[0], element[1], element[2], element[3], element[4], ref)
+        # execute the query
+        self.cursor.execute(sql)
+        self.conn.commit()  # guardamos cambios 
+    
 
     def checkuser(self, user, passw):
         sql = "select password from user where user='"+user+"'and password='"+passw+"'"
