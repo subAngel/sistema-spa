@@ -80,7 +80,7 @@ class Home:
                                    overrelief="raise", image=self.imgP, command=lambda: self.moduloPaciente()).place(x=600, y=420, width=200, height=250)
 
         self.btn_cita = Button(self.frame, font=(font_family, 15), foreground=foreground, background=color3, text="Ingresar", borderwidth=2, relief="flat", cursor="hand1",
-                               overrelief="raise", image=self.imgC, command=lambda: self.Option(3)).place(x=1000, y=420, width=200, height=250)
+                               overrelief="raise", image=self.imgC, command=lambda: self.modulo_consulta()).place(x=1000, y=420, width=200, height=250)
 
     def Option(self, op):
         if op == 1:
@@ -344,7 +344,6 @@ class Home:
 
 # ********************* MODULO PACIENTE **********************
 
-
     def components_paciente(self, mp):
         self.nombre_paciente = StringVar()
         self.apellidos_paciente = StringVar()
@@ -465,7 +464,7 @@ class Home:
         self.btn_modificar_p.grid(column=3, row=7)
 
         self.btn_generar_cita = Button(mp, foreground=foreground, text="Generar Cita", font=(
-            font_family, 12), cursor="hand1", overrelief="raise", background="#b3ffae", command=lambda: self.generar_reserva(mp))
+            font_family, 12), cursor="hand1", overrelief="raise", background="#b3ffae", command=lambda: print("Generar reserva aqui"))
         self.btn_generar_cita.grid(column=3, row=8)
 
     def vaciar_tabla_cliente(self):
@@ -477,13 +476,12 @@ class Home:
         self.vaciar_tabla_cliente()
         d = Data()
         self.filas = d.returnAllElementsC()
-        print(self.filas)
+        # print(self.filas)
         for fila in self.filas:
             id = fila[0]
             self.tabla_pacientes.insert("", END, id, text=id, values=fila)
 
     def nuevo_cliente(self, mp):
-        print("hola")
         d = Data()
         arr = [self.nombre_paciente.get(), self.apellidos_paciente.get(), self.email.get(
         ), self.descuento.get(), self.condicion_fisica.get()]
@@ -519,22 +517,22 @@ class Home:
         ), int(self.descuento.get()), self.condicion_fisica.get()]
 
         id = int(self.tabla_pacientes.selection()[0])
-        print("idcc ", id)
+        # print("idcc ", id)
         db = Data()
         db.actualizar_paciente(arr, id)
         self.lbl_messagess.config(
             text="Paciente modificado correctamente", fg="green")
         self.llenar_tabla_cliente()
-        print("hii")
+        # print("hii")
         self.limpiar_campos_cliente()
         self.btn_nuevo_p.config(state=NORMAL)
         self.btn_eliminar_p.config(state=NORMAL)
         self.btn_modificar_p.config(state=NORMAL)
-        print("-----------------------------------")
+        # print("-----------------------------------")
 
     def eliminarT(self, idtt, popTE):
         d = Data()
-        print(idtt)
+        # print(idtt)
         d.DeleteC(idtt)
         popTE.destroy()
         # messagebox.showinfo(title="Eliminacion",
@@ -568,102 +566,146 @@ class Home:
 
 # TODO -------------------------------------------------------MODULO CITA----------------------------------------------
 
-    def generar_reserva(self, padre):
-        self.padre = Toplevel(self.frame)
-        self.padre.title("Generar Cita")
-        ancho = self.frame.winfo_screenwidth()
-        alto = self.frame.winfo_screenheight()
-        self.padre.geometry("{}x{}".format(740, 550))
-        self.marcoReserva = LabelFrame(self.padre, text="Generar una reserva")
 
-        self.marcoReserva.place(x=50, y=50, width=630, height=400)
+    def modulo_consulta(self):
+        self.frame_consulta = Toplevel(self.frame)
+        self.frame_consulta.title("Generar Cita")
+        self.frame_consulta.state("zoomed")
+        self.marcoReserva = LabelFrame(
+            self.frame_consulta, text="Generar una reserva")
+
+        self.marcoReserva.place(x=(290+142), y=100, width=630, height=660)
         self.marcoReserva.config(background=background)
-        self.components_reserva(self.marcoReserva)
+        self.components_consulta(self.marcoReserva)
+        # self.components_reserva(self.marcoReserva)
 
-    def components_reserva(self, mr):
+    def components_consulta(self, mr):
         # ? @mc es el marco reserva
-        self.status_pago = BooleanVar()
-        self.fecha_dia_reserva = StringVar()
-        self.fecha_mes_reserva = StringVar()
-        self.fecha_anio_reserva = StringVar()
 
-        self.titulo_reserva = Label(mr, foreground=foreground, font=(
-            font_family, 22), background=background, text="Reserva").grid(column=1, row=0, columnspan=3)
+        self.titulo_consulta = Label(mr, foreground=foreground, font=(
+            font_family, 22), background=background, text="consulta").grid(column=0, row=0, columnspan=2, padx=30)
 
-        self.tabla_terapeuta_reserva = ttk.Treeview(mr)
-        # self.tabla_terapeuta_reserva.bind
-        self.tabla_terapeuta_reserva.grid(column=0, row=1, padx=10)
-        self.tabla_terapeuta_reserva['columns'] = ("ID", "TERAPEUTA")
-        self.tabla_terapeuta_reserva.column("#0", width=0, stretch=NO)
-        self.tabla_terapeuta_reserva.column("ID", width=30, anchor=CENTER)
-        self.tabla_terapeuta_reserva.column(
+        self.tabla_terapeuta_consulta = ttk.Treeview(mr)
+        # self.tabla_terapeuta_consulta.bind
+        self.tabla_terapeuta_consulta.grid(column=0, row=1, padx=10)
+        self.tabla_terapeuta_consulta['columns'] = ("ID", "TERAPEUTA")
+        self.tabla_terapeuta_consulta.column("#0", width=0, stretch=NO)
+        self.tabla_terapeuta_consulta.column("ID", width=30, anchor=CENTER)
+        self.tabla_terapeuta_consulta.column(
             "TERAPEUTA", width=140, anchor=CENTER)
-        self.tabla_terapeuta_reserva.heading("#0", text="")
-        self.tabla_terapeuta_reserva.heading("ID", text="ID")
-        self.tabla_terapeuta_reserva.heading("TERAPEUTA", text="TERAPEUTA")
+        self.tabla_terapeuta_consulta.heading("#0", text="")
+        self.tabla_terapeuta_consulta.heading("ID", text="ID")
+        self.tabla_terapeuta_consulta.heading("TERAPEUTA", text="TERAPEUTA")
 
         # * ----------------------tabla pacientes
-        self.tabla_pacientes_reserva = ttk.Treeview(mr)
-        self.tabla_pacientes_reserva.grid(column=1, row=1, padx=10)
-        self.tabla_pacientes_reserva['columns'] = ("ID", "PACIENTE")
-        self.tabla_pacientes_reserva.column("#0", width=0, stretch=NO)
-        self.tabla_pacientes_reserva.column("ID", width=30, anchor=CENTER)
-        self.tabla_pacientes_reserva.column(
+        self.tabla_pacientes_consulta = ttk.Treeview(mr)
+        self.tabla_pacientes_consulta.grid(column=1, row=1, padx=10)
+        self.tabla_pacientes_consulta['columns'] = ("ID", "PACIENTE")
+        self.tabla_pacientes_consulta.column("#0", width=0, stretch=NO)
+        self.tabla_pacientes_consulta.column("ID", width=30, anchor=CENTER)
+        self.tabla_pacientes_consulta.column(
             "PACIENTE", width=140, anchor=CENTER)
-        self.tabla_pacientes_reserva.heading("#0", text="")
-        self.tabla_pacientes_reserva.heading("ID", text="ID")
-        self.tabla_pacientes_reserva.heading("PACIENTE", text="PACIENTE")
+        self.tabla_pacientes_consulta.heading("#0", text="")
+        self.tabla_pacientes_consulta.heading("ID", text="ID")
+        self.tabla_pacientes_consulta.heading("PACIENTE", text="PACIENTE")
 
         # * ---------------------tabla servicios
-        self.tabla_servicios_reserva = ttk.Treeview(mr)
-        self.tabla_servicios_reserva.grid(column=2, row=1, padx=10)
-        self.tabla_servicios_reserva['columns'] = ("ID", "SERVICIO")
-        self.tabla_servicios_reserva.column("#0", width=0, stretch=NO)
-        self.tabla_servicios_reserva.column("ID", width=30, anchor=CENTER)
-        self.tabla_servicios_reserva.column(
+        self.tabla_servicios_consulta = ttk.Treeview(mr)
+        self.tabla_servicios_consulta.grid(column=2, row=1, padx=10)
+        self.tabla_servicios_consulta['columns'] = ("ID", "SERVICIO")
+        self.tabla_servicios_consulta.column("#0", width=0, stretch=NO)
+        self.tabla_servicios_consulta.column("ID", width=30, anchor=CENTER)
+        self.tabla_servicios_consulta.column(
             "SERVICIO", width=100, anchor=CENTER)
-        self.tabla_servicios_reserva.heading("#0", text="")
-        self.tabla_servicios_reserva.heading("ID", text="ID")
-        self.tabla_servicios_reserva.heading("SERVICIO", text="SERVICIO")
+        self.tabla_servicios_consulta.heading("#0", text="")
+        self.tabla_servicios_consulta.heading("ID", text="ID")
+        self.tabla_servicios_consulta.heading("SERVICIO", text="SERVICIO")
 
-        self.llenar_tablas_reserva()
+        self.tabla_consulta = ttk.Treeview(mr)
+        self.tabla_consulta.grid(
+            column=0, row=2, columnspan=3, pady=30, padx=40)
+        self.tabla_consulta['columns'] = (
+            "ID", "PACIENTE", "TERAPEUTA", "SERVICIO", "MONTO")
+        self.tabla_consulta.column("#0", width=0, stretch=NO)
+        self.tabla_consulta.column("ID", width=100)
+        self.tabla_consulta.column("PACIENTE", width=100)
+        self.tabla_consulta.column("TERAPEUTA", width=100)
+        self.tabla_consulta.column("SERVICIO", width=100)
+        self.tabla_consulta.column("MONTO", width=100)
+        self.tabla_consulta.heading("#0", text="")
+        self.tabla_consulta.heading("ID", text="ID CONSULTA")
+        self.tabla_consulta.heading("PACIENTE", text="ID ACIENTE")
+        self.tabla_consulta.heading("TERAPEUTA", text="ID TERAPEUTA")
+        self.tabla_consulta.heading("SERVICIO", text="ID SERVICIO")
+        self.tabla_consulta.heading("MONTO", text="MONTO $")
+
+        # * ---
+        self.btn_generar_total = Button(mr, text="Insertar consulta", foreground=foreground, background=input_color, font=(
+            font_family, 18), command=self.generar_consulta)
+        self.btn_generar_total.grid(column=0, row=3, pady=20)
+
+        self.llenar_tablas_consulta()
 
         # self.label_fecha = Label(mr, foreground=foreground, background=background, font=(
         #     font_family, 12)).grid(column=1, row=1)
-        # self.combo_year_reserva = ttk.Combobox(
+        # self.combo_year_consulta = ttk.Combobox(
         #     self, state="readonly", values=['2022', '2023', '2024', 2025], width=10).grid(column=2, row=1)
-        # self.combo_month_reserva = ttk.Combobox(mr, state="readonly", values=[
+        # self.combo_month_consulta = ttk.Combobox(mr, state="readonly", values=[
         #     "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"], width=10).grid(column=3, row=1)
-        # self.combo_day_reserva = ttk.Combobox(mr, state="readonly", values=[
+        # self.combo_day_consulta = ttk.Combobox(mr, state="readonly", values=[
         #     "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "21", "23", "24", "25", "26", "27", "28", "29", "30", "31"], width=10).grid(column=4, row=1)
 
-    def vaciar_tabla_reserva(self):
-        filas_tera = self.tabla_terapeuta_reserva.get_children()
+    def vaciar_tabla_consulta(self):
+        filas_tera = self.tabla_terapeuta_consulta.get_children()
         for fila in filas_tera:
-            self.tabla_terapeuta_reserva.delete(fila)
-        filas_pac = self.tabla_pacientes_reserva.get_children()
+            self.tabla_terapeuta_consulta.delete(fila)
+        filas_pac = self.tabla_pacientes_consulta.get_children()
         for fila in filas_pac:
-            self.tabla_pacientes_reserva.delete(fila)
-        fila_ser = self.tabla_servicios_reserva.get_children()
+            self.tabla_pacientes_consulta.delete(fila)
+        fila_ser = self.tabla_servicios_consulta.get_children()
         for fila in fila_ser:
-            self.tabla_servicios_reserva.delete(fila)
+            self.tabla_servicios_consulta.delete(fila)
+        fila_consulta = self.tabla_consulta.get_children()
+        for fila in fila_consulta:
+            self.tabla_consulta.delete(fila)
 
-    def llenar_tablas_reserva(self):
-        self.vaciar_tabla_reserva()
+    def llenar_tablas_consulta(self):
+        self.vaciar_tabla_consulta()
         db = Data()
         self.filas_tera = db.return_list_terapeutas()
         for fila in self.filas_tera:
             id = fila[0]
-            self.tabla_terapeuta_reserva.insert(
+            self.tabla_terapeuta_consulta.insert(
                 "", END, id, text=id, values=fila)
 
         self.filas_pac = db.return_list_pacientes()
         for fila in self.filas_pac:
             id = fila[0]
-            self.tabla_pacientes_reserva.insert(
+            self.tabla_pacientes_consulta.insert(
                 "", END, id, text=id, values=fila)
+
         self.filas_serv = db.return_list_servicios()
         for fila in self.filas_serv:
             id = fila[0]
-            self.tabla_servicios_reserva.insert(
+            self.tabla_servicios_consulta.insert(
                 "", END, id, text=id, values=fila)
+
+        self.filas_consulta = db.return_consultas()
+        for fila in self.filas_consulta:
+            id = fila[0]
+            self.tabla_consulta.insert("", END, id, text=id, values=fila)
+
+    def generar_consulta(self):
+        id_paciente = self.tabla_pacientes_consulta.selection()[0]
+        id_terapeuta = self.tabla_terapeuta_consulta.selection()[0]
+        id_servicio = self.tabla_servicios_consulta.selection()[0]
+        db = Data()
+        descuento = int(db.return_descuento_paciente(id_paciente)[0])
+        precio_servicio = int(db.return_monto_servicio(id_servicio)[0])
+        total_consulta = precio_servicio - precio_servicio * (descuento/100)
+        round(total_consulta)
+
+        valores = (int(id_paciente), int(id_terapeuta),
+                   int(id_servicio), round(total_consulta))
+        db.insertar_consulta(valores)
+        self.llenar_tablas_consulta()

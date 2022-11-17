@@ -128,3 +128,28 @@ class Data:
         sql = "select id_servicios, nombre from servicios"
         self.cursor.execute(sql)
         return self.cursor.fetchall()
+
+    # regresar el descuento de un paciente
+    def return_descuento_paciente(self, id):
+        sql = 'select descuento from paciente where id_paciente={}'.format(id)
+        self.cursor.execute(sql)
+        return self.cursor.fetchone()
+
+    # regresar el monto del servicio
+    def return_monto_servicio(self, id):
+        sql = "select monto from servicios where id_servicios={}".format(id)
+        self.cursor.execute(sql)
+        return self.cursor.fetchone()
+
+    # obtener las consultas
+    def return_consultas(self):
+        sql = "select * from paciente_terapeuta"
+        self.cursor.execute(sql)
+        return self.cursor.fetchall()
+
+    # insertar consulta
+    def insertar_consulta(self, values):
+        sql = "insert into paciente_terapeuta (id_paciente, id_terapeuta, id_servicio, total) values ({},{},{},{})".format(
+            values[0], values[1], values[2], values[3])
+        self.cursor.execute(sql)
+        self.conn.commit()

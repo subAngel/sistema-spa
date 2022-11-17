@@ -37,7 +37,7 @@ class Login:
                                 textvariable=self.password).place(x=150, y=370, height=25, width=200)
 
     def DrawImage(self):
-        self.img = ImageTk.PhotoImage(Image.open('sistema-spa-main\lovgos.png'))
+        self.img = ImageTk.PhotoImage(Image.open('lovgos.png'))
         lblImagen = Label(self.frame, image=self.img).place(
             x=110, y=40, width=300, height=150)
 
