@@ -627,16 +627,16 @@ class Home:
         self.tabla_consulta['columns'] = (
             "ID", "PACIENTE", "TERAPEUTA", "SERVICIO", "MONTO")
         self.tabla_consulta.column("#0", width=0, stretch=NO)
-        self.tabla_consulta.column("ID", width=100)
-        self.tabla_consulta.column("PACIENTE", width=100)
+        self.tabla_consulta.column("ID", width=40)
+        self.tabla_consulta.column("PACIENTE", width=150)
         self.tabla_consulta.column("TERAPEUTA", width=100)
         self.tabla_consulta.column("SERVICIO", width=100)
         self.tabla_consulta.column("MONTO", width=100)
         self.tabla_consulta.heading("#0", text="")
-        self.tabla_consulta.heading("ID", text="ID CONSULTA")
-        self.tabla_consulta.heading("PACIENTE", text="ID ACIENTE")
-        self.tabla_consulta.heading("TERAPEUTA", text="ID TERAPEUTA")
-        self.tabla_consulta.heading("SERVICIO", text="ID SERVICIO")
+        self.tabla_consulta.heading("ID", text="ID")
+        self.tabla_consulta.heading("PACIENTE", text="PACIENTE")
+        self.tabla_consulta.heading("TERAPEUTA", text="TERAPEUTA")
+        self.tabla_consulta.heading("SERVICIO", text="SERVICIO")
         self.tabla_consulta.heading("MONTO", text="MONTO $")
 
         # * ---
@@ -690,7 +690,8 @@ class Home:
             self.tabla_servicios_consulta.insert(
                 "", END, id, text=id, values=fila)
 
-        self.filas_consulta = db.return_consultas()
+        # self.filas_consulta = db.return_consultas()
+        self.filas_consulta = db.return_inner_join_consulta()
         for fila in self.filas_consulta:
             id = fila[0]
             self.tabla_consulta.insert("", END, id, text=id, values=fila)

@@ -147,6 +147,12 @@ class Data:
         self.cursor.execute(sql)
         return self.cursor.fetchall()
 
+    # Retornar los nombres
+    def return_inner_join_consulta(self):
+        sql = "select c.id_p_t, concat_ws(' ', p.nombre, p.apellidos) as paciente, concat_ws(' ', t.nombre, t.apellidos) as terapeuta , s.nombre as servicio ,c.total from paciente_terapeuta c inner join paciente p on c.id_paciente = p.id_paciente inner join terapeuta t on c.id_terapeuta = t.id_terapeuta inner join servicios s on c.id_servicio = s.id_servicios"
+        self.cursor.execute(sql)
+        return self.cursor.fetchall()
+
     # insertar consulta
     def insertar_consulta(self, values):
         sql = "insert into paciente_terapeuta (id_paciente, id_terapeuta, id_servicio, total) values ({},{},{},{})".format(
