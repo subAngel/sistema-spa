@@ -96,8 +96,6 @@ class Data:
         try:
             sql = "update paciente set nombre = '{}',apellidos = '{}', email='{}', descuento={}, condicion_salud='{}'  where id_paciente = {};".format(
                 args[0], args[1], args[2], args[3], args[4], id)
-
-        
             print(args, id)
             self.cursor.execute(sql)
             self.conn.commit()
