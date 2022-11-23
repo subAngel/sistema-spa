@@ -39,7 +39,7 @@ CREATE TABLE `paciente` (
 
 LOCK TABLES `paciente` WRITE;
 /*!40000 ALTER TABLE `paciente` DISABLE KEYS */;
-INSERT INTO `paciente` VALUES (2,'Angel Jesusss','Zorrilla','whoangel.agl@gmail.com',10,'dolor de espalda');
+INSERT INTO `paciente` VALUES (2,'Angel Jesus','Zorrilla','whoangel.agl@gmail.com',10,'dolor de espalda');
 /*!40000 ALTER TABLE `paciente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -63,7 +63,7 @@ CREATE TABLE `paciente_terapeuta` (
   CONSTRAINT `fk_paciente` FOREIGN KEY (`id_paciente`) REFERENCES `paciente` (`id_paciente`),
   CONSTRAINT `fk_servicio` FOREIGN KEY (`id_servicio`) REFERENCES `servicios` (`id_servicios`),
   CONSTRAINT `fk_terapeuta` FOREIGN KEY (`id_terapeuta`) REFERENCES `terapeuta` (`id_terapeuta`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +72,7 @@ CREATE TABLE `paciente_terapeuta` (
 
 LOCK TABLES `paciente_terapeuta` WRITE;
 /*!40000 ALTER TABLE `paciente_terapeuta` DISABLE KEYS */;
-INSERT INTO `paciente_terapeuta` VALUES (1,2,2,2,540),(2,2,2,4,720);
+INSERT INTO `paciente_terapeuta` VALUES (1,2,2,2,540),(2,2,2,4,720),(3,2,3,5,810);
 /*!40000 ALTER TABLE `paciente_terapeuta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -192,4 +192,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-17  0:22:59
+-- Dump completed on 2022-11-22 21:37:12
