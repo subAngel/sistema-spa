@@ -30,7 +30,7 @@ CREATE TABLE `paciente` (
   `descuento` int DEFAULT NULL,
   `condicion_salud` varchar(105) DEFAULT NULL,
   PRIMARY KEY (`id_paciente`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,6 +39,7 @@ CREATE TABLE `paciente` (
 
 LOCK TABLES `paciente` WRITE;
 /*!40000 ALTER TABLE `paciente` DISABLE KEYS */;
+INSERT INTO `paciente` VALUES (2,'Angel Jesusss','Zorrilla','whoangel.agl@gmail.com',10,'dolor de espalda');
 /*!40000 ALTER TABLE `paciente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -62,7 +63,7 @@ CREATE TABLE `paciente_terapeuta` (
   CONSTRAINT `fk_paciente` FOREIGN KEY (`id_paciente`) REFERENCES `paciente` (`id_paciente`),
   CONSTRAINT `fk_servicio` FOREIGN KEY (`id_servicio`) REFERENCES `servicios` (`id_servicios`),
   CONSTRAINT `fk_terapeuta` FOREIGN KEY (`id_terapeuta`) REFERENCES `terapeuta` (`id_terapeuta`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -71,6 +72,7 @@ CREATE TABLE `paciente_terapeuta` (
 
 LOCK TABLES `paciente_terapeuta` WRITE;
 /*!40000 ALTER TABLE `paciente_terapeuta` DISABLE KEYS */;
+INSERT INTO `paciente_terapeuta` VALUES (1,2,2,2,540),(2,2,2,4,720);
 /*!40000 ALTER TABLE `paciente_terapeuta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -85,7 +87,7 @@ CREATE TABLE `reserva` (
   `id_reserva` int NOT NULL AUTO_INCREMENT,
   `pk_paciente` int NOT NULL,
   `fecha` date NOT NULL,
-  `status_pago` tinyint NOT NULL,
+  `hora` time NOT NULL,
   PRIMARY KEY (`id_reserva`),
   KEY `fk_paciente_idx` (`pk_paciente`),
   CONSTRAINT `fk_paciente_reserva` FOREIGN KEY (`pk_paciente`) REFERENCES `paciente` (`id_paciente`)
@@ -111,9 +113,10 @@ DROP TABLE IF EXISTS `servicios`;
 CREATE TABLE `servicios` (
   `id_servicios` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
-  `monto` varchar(45) NOT NULL,
+  `monto` int NOT NULL,
+  `descripcion` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id_servicios`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,6 +125,7 @@ CREATE TABLE `servicios` (
 
 LOCK TABLES `servicios` WRITE;
 /*!40000 ALTER TABLE `servicios` DISABLE KEYS */;
+INSERT INTO `servicios` VALUES (1,'paquete 1',500,'Descripcion del paquete 1'),(2,'paquete 2',600,'Descripcion del paquete 2'),(3,'paquete 3',700,'Descripcion del paquete 3'),(4,'paquete 4',800,'Descripcion del paquete 4'),(5,'paquete 5',900,'Descripcion del paquete 5'),(6,'paquete 6',1000,'Descripcion del paquete 6');
 /*!40000 ALTER TABLE `servicios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,7 +145,7 @@ CREATE TABLE `terapeuta` (
   `especialidad` varchar(50) NOT NULL,
   `cedula` varchar(13) NOT NULL,
   PRIMARY KEY (`id_terapeuta`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -150,7 +154,7 @@ CREATE TABLE `terapeuta` (
 
 LOCK TABLES `terapeuta` WRITE;
 /*!40000 ALTER TABLE `terapeuta` DISABLE KEYS */;
-INSERT INTO `terapeuta` VALUES (1,'Angel','Zorrilla','Matutino',8000,'espalda','294829292');
+INSERT INTO `terapeuta` VALUES (2,'Angel ','Cuevas','Matutino',8000,'espalda','1931948714'),(3,'Claudia','Arango','Vespertino',29921,'hombros','23232332');
 /*!40000 ALTER TABLE `terapeuta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -188,4 +192,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-14 16:48:13
+-- Dump completed on 2022-11-17  0:22:59
