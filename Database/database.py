@@ -146,11 +146,22 @@ class Data:
         self.cursor.execute(sql)
         return self.cursor.fetchall()
 
+    def return_consulta(self, id):
+        sql = "select c.id_p_t, concat_ws(' ', p.nombre, p.apellidos) as paciente, concat_ws(' ', t.nombre, t.apellidos) as terapeuta , s.nombre as servicio ,c.total from paciente_terapeuta c inner join paciente p on c.id_paciente = p.id_paciente inner join terapeuta t on c.id_terapeuta = t.id_terapeuta inner join servicios s on c.id_servicio = s.id_servicios where c.id_p_t = {}".format(id)
+        self.cursor.execute(sql)
+        return self.cursor.fetchone()
+
     # Retornar los nombres
     def return_inner_join_consulta(self):
         sql = "select c.id_p_t, concat_ws(' ', p.nombre, p.apellidos) as paciente, concat_ws(' ', t.nombre, t.apellidos) as terapeuta , s.nombre as servicio ,c.total from paciente_terapeuta c inner join paciente p on c.id_paciente = p.id_paciente inner join terapeuta t on c.id_terapeuta = t.id_terapeuta inner join servicios s on c.id_servicio = s.id_servicios"
         self.cursor.execute(sql)
         return self.cursor.fetchall()
+
+    def return_descripcion_servicio(self, id):
+        sql = "select descripcion from servicios where id_servicios= {}".format(
+            id)
+        self.cursor.execute(sql)
+        return self.cursor.fetchone()
 
     # insertar consulta
     def insertar_consulta(self, values):

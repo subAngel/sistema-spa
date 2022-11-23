@@ -4,6 +4,7 @@ from tkinter import *
 from tkinter import messagebox, ttk
 from Database.database import *
 
+
 from PIL import Image, ImageTk
 
 
@@ -113,6 +114,7 @@ class Home:
 
     def moduloPaciente(self):
         self.popP = Toplevel(self.frame)
+
         self.popP.title("Cliente")
         # popT.attributes('-topmost',True)
         self.popP.state('zoomed')
@@ -569,6 +571,7 @@ class Home:
 
     def modulo_consulta(self):
         self.frame_consulta = Toplevel(self.frame)
+        self.frame.iconify()
         self.frame_consulta.title("Generar Cita")
         self.frame_consulta.state("zoomed")
         self.marcoReserva = LabelFrame(
@@ -579,8 +582,27 @@ class Home:
         self.components_consulta(self.marcoReserva)
         # self.components_reserva(self.marcoReserva)
 
-    def components_consulta(self, mr):
         # ? @mc es el marco reserva
+
+    def components_consulta(self, mr):
+
+        def mostrar_info_consulta(event):
+            database = Data()
+            id = self.tabla_consulta.selection()[0]
+            datos_consulta = database.return_consulta(int(id))
+            texto = "-------- NAMASTE ---------\n" + "\n" + "     CONSULTA     "
+            texto += "\n\n"
+            texto += "Paciente: {} \n".format(datos_consulta[1])
+            texto += "Terapeuta: {} \n".format(datos_consulta[2])
+            texto += "Paquete: {} \n".format(datos_consulta[3])
+            texto += "              Monto: ${} \n".format(datos_consulta[4])
+            messagebox.showinfo("Ticket", texto)
+
+        def mostrar_info_paquete(event):
+            database = Data()
+            id = self.tabla_servicios_consulta.selection()[0]
+            descripcion = database.return_descripcion_servicio(int(id))
+            messagebox.showinfo("Descripcion del paquete", descripcion[0])
 
         self.titulo_consulta = Label(mr, foreground=foreground, font=(
             font_family, 22), background=background, text="consulta").grid(column=0, row=0, columnspan=2, padx=30)
@@ -620,6 +642,7 @@ class Home:
         self.tabla_servicios_consulta.heading("#0", text="")
         self.tabla_servicios_consulta.heading("ID", text="ID")
         self.tabla_servicios_consulta.heading("SERVICIO", text="SERVICIO")
+        self.tabla_servicios_consulta.bind('<Double-1>', mostrar_info_paquete)
 
         self.tabla_consulta = ttk.Treeview(mr)
         self.tabla_consulta.grid(
@@ -638,6 +661,24 @@ class Home:
         self.tabla_consulta.heading("TERAPEUTA", text="TERAPEUTA")
         self.tabla_consulta.heading("SERVICIO", text="SERVICIO")
         self.tabla_consulta.heading("MONTO", text="MONTO $")
+        self.tabla_consulta.bind('<Double-1>', mostrar_info_consulta)
+
+        # id = self.tabla_consulta.selection()[0]
+        # if int(id) > 0:
+        #     datos_consulta = database.return_consulta(id)
+        # else:
+        #     datos_consulta = "Sin datos"
+
+        """
+
+        -----------------NAMASTE-----------------
+                        CONSULTA
+        Paciente: equis
+        Terapetua: equis
+        Paquete: paquete1
+        Descripcion:
+                                Monto: $0000
+        """
 
         # * ---
         self.btn_generar_total = Button(mr, text="Insertar consulta", foreground=foreground, background=input_color, font=(
