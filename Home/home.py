@@ -884,7 +884,7 @@ class Home:
         
 
         # * ---
-        self.btn_generar_total = Button(mr, text="Insertar consulta", foreground=foreground, background=input_color, font=(
+        self.btn_generar_total = Button(mr, text="Insertar reserva", foreground=foreground, background=input_color, font=(
             font_family, 18),  command=self.generar_reserva)
         self.btn_generar_total.grid(column=0, row=3, pady=20)
 
