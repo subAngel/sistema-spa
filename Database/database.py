@@ -185,4 +185,11 @@ class Data:
             values[0], fecha, values[2])
         self.cursor.execute(sql)
         self.conn.commit()
+        
+        
+    # regresar el correo de un paciente
+    def return_amil_paciente(self, id):
+        sql = 'select email from paciente where id_paciente={}'.format(id)
+        self.cursor.execute(sql)
+        return self.cursor.fetchone()
 

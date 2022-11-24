@@ -1,8 +1,9 @@
-import ctypes
+import ctypes, datetime as dt
 from re import T
 from tkinter import *
 from tkinter import messagebox, ttk
 from Database.database import *
+from Login.correoe import *
 
 
 from PIL import Image, ImageTk
@@ -40,7 +41,9 @@ class Home:
         self.DrawImage()
         self.frame.mainloop()
         # self.loadImage()
-
+    
+    
+    
     def DrawLabel(self):
         self.lbl_titulo = Label(self.frame, foreground=foreground, font=(
             font_family, 40), background=background, text="Bienvenido al sistema").place(x=450, y=20)
@@ -54,10 +57,26 @@ class Home:
             font_family, 30), background=background, text="Generar consulta").place(x=980, y=350)
         self.lbl_opcion = Label(self.frame, foreground=foreground, font=(
             font_family, 100), background=background, text=". . .").place(x=600, y=150)
+        now = dt.datetime.now()
+        fecha_hoy = self.current_date_format(now)
+        # Create Label to display the Date
+        self.lbl_opcion2 = Label(self.frame,foreground=foreground, background=background,text=str(fecha_hoy), 
+                                font=(font_family, 15)).place(x=1290,y=1)
         # self.lbl_usuario = Label(self.frame, foreground="white", font=(
         #     8), background="#000000", text="Usuario").place(x=230, y=260)
         # self.lbl_usuario = Label(self.frame, foreground="white", font=(git
         #     8), background="#000000", text="Contraseña").place(x=220, y=340)
+        
+        
+    def current_date_format(self, date):
+            months = ("Enero", "Febrero", "Marzo", "Abri", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")
+            day = date.day
+            month = months[date.month - 1]
+            year = date.year
+            message = "{} de {} del {}".format(day, month, year)
+            return message    
+        
+    
 
     def DrawImage(self):
         self.img = ImageTk.PhotoImage(Image.open(
@@ -922,6 +941,7 @@ class Home:
         #id_terapeuta = self.tabla_terapeuta_consulta.selection()[0]
         #id_servicio = self.tabla_servicios_consulta.selection()[0]
         db = Data()
+        ECD=mails()
         #descuento = int(db.return_descuento_paciente(id_paciente)[0])
         #precio_servicio = int(db.return_monto_servicio(id_servicio)[0])
         #total_consulta = precio_servicio - precio_servicio * (descuento/100)
@@ -930,8 +950,18 @@ class Home:
         self.timee=self.anioo.get()+"-"+self.mess.get()+"-"+self.diia.get()+" "+self.horaa.get()+":"+self.minu.get()+":"+"00"
         print("tiempo ", self.timee)
         estatus = 1 if self.statusp.get()=="Pagado" else 0
+        correo = db.return_amil_paciente(id_paciente)
+        o= str(correo).replace("(","")
+        p=o.replace(")","")
+        q=p.replace(",","")
+        r=q.replace("'","")
         valoresr = (int(id_paciente),"2022-12-31 15:30:21",estatus)
+        valorescorreo=(str(id_paciente),r,str(self.timee),str(estatus))
+        
         print(valoresr)
+        print(correo)
+        print(valorescorreo)
+        mails.envia_correoconfirm(self,valorescorreo)
         db.insertar_reserva(valoresr)
         self.llenar_tablaCit()
         #self.llenar_tablas_reserva() 
