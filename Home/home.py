@@ -761,15 +761,23 @@ class Home:
         id_terapeuta = self.tabla_terapeuta_consulta.selection()[0]
         id_servicio = self.tabla_servicios_consulta.selection()[0]
         db = Data()
+        ECD=mails()
         descuento = int(db.return_descuento_paciente(id_paciente)[0])
         precio_servicio = int(db.return_monto_servicio(id_servicio)[0])
         total_consulta = precio_servicio - precio_servicio * (descuento/100)
         round(total_consulta)
+        correo = db.return_amil_paciente(id_paciente)
+        o= str(correo).replace("(","")
+        p=o.replace(")","")
+        q=p.replace(",","")
+        r=q.replace("'","")
 
         valores = (int(id_paciente), int(id_terapeuta),
                    int(id_servicio), round(total_consulta))
+        valorescorreo=(str(id_paciente),r,str(id_terapeuta),str(id_servicio),str(total_consulta))
         db.insertar_consulta(valores)
         self.llenar_tablas_consulta()
+        mails.envia_correocotizacion(self,valorescorreo)
 
 
 
